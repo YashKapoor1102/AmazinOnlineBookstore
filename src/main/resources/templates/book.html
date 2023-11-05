@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book List</title>
+    <style>
+        .search-input {
+            width: 350px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Amazin Bookstore</h1>
+
+<form action="/search" method="post">
+    <input type="text" name="query" class="search-input" placeholder="Search by ISBN, Description, Title, Author, or Publisher">
+    <input type="submit" value="Search/Filter">
+</form>
+<!-- Sort by Title Button -->
+<form action="/books/sortByTitle" method="get" style="display:inline;">
+    <input type="submit" value="Sort by Title">
+</form>
+
+<!-- Sort by Author Button -->
+<form action="/books/sortByAuthor" method="get" style="display:inline;">
+    <input type="submit" value="Sort by Author">
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>ISBN</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Description</th>
+        <th>Publisher</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.isbn}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.description}"></td>
+        <td th:text="${book.publisher}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -44,7 +44,7 @@ public class BookController {
      */
     @PostMapping("/search")
     public String search(@RequestParam String query, Model model) {
-        List<Book> searchResults = bookRepository.findByIsbnOrDescriptionOrAuthorOrPublisherOrTitle(query, query, query, query, query);
+        List<Book> searchResults = bookRepository.findByTitleContainingOrAuthorContainingOrPublisherContainingOrDescriptionContainingOrIsbnContaining(query, query, query, query, query);
         model.addAttribute("books", searchResults);
         return "book";
     }

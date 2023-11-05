@@ -13,7 +13,8 @@ import org.springframework.data.repository.CrudRepository;
 public interface BookRepository extends CrudRepository<Book, Long> {
 
     //Used for search functionality
-    List<Book> findByIsbnOrDescriptionOrAuthorOrPublisherOrTitle(String isbn, String description, String author, String publisher, String title);
+
+    List<Book> findByTitleContainingOrAuthorContainingOrPublisherContainingOrDescriptionContainingOrIsbnContaining(String isbn, String description, String author, String publisher, String title);
 
 
     //Below functions might be used by other classes. If not used in future implementations, they can be deleted.

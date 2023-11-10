@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Users</title>
+</head>
+<!-- Display error message if username is taken -->
+<div th:if="${registrationError}" class="error" th:text="${registrationError}"></div>
+
+<body>
+  <h1>List of Registered Users</h1>
+  <div th:each="user : ${users}">
+    <p>ID: <span th:text="${user.id}"></span></p>
+    <p>Username: <span th:text="${user.username}"></span></p>
+    <p>Role: <span th:text="${user.role}"></span></p>
+    <hr>
+  </div>
+</body>
+</html>

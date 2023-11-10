@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+
+<h2>User Registration Form</h2>
+
+<!-- Display error message if username is taken -->
+<div th:if="${registrationError}" class="error" th:text="${registrationError}"></div>
+<br>
+<form th:action="@{/user/register}" th:object="${user}" method="post">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" th:field="*{username}" required>
+    </div>
+    <br>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}" required>
+    </div>
+    <br>
+    <div>
+        <button type="submit">Register</button>
+    </div>
+</form>
+
+</body>
+</html>

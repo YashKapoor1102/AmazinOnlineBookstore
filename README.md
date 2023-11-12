@@ -2,14 +2,22 @@
 SYSC4806 Final Project
 
 # Project Description 
-This project is an online web application bookstore named Amazin Bookstore. It offers owners robust tools to handle their inventory and also enables users to browse and purchase books. It introduces additional functionalities like book recommendations and filtering.
+Amazin Bookstore is an online web application that serves as a comprehensive platform for bookstore owners and users. It provides bookstore owners with robust tools for managing their inventory, while also providing users with a seamless experience to browse and purchase books. Additionally, the application offers advanced features such as book recommendations and flexible filtering options
+
+# Installation Instructions
+
+# Usage
+
 # Development Roadmap
 Milestone 1 : Early prototype
+*
+*
 
 Milestone 2 : Alpha Release
 
 Milestone 3 : Final demo
 
 # Known issues
+Currently, there are no known issues.
 
 # License

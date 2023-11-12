@@ -5,8 +5,32 @@ SYSC4806 Final Project
 Amazin Bookstore is an online web application that serves as a comprehensive platform for bookstore owners and users. It provides bookstore owners with robust tools for managing their inventory, while also providing users with a seamless experience to browse and purchase books. Additionally, the application offers advanced features such as book recommendations and flexible filtering options
 
 # Installation Instructions
+Clone the git repository or
+run the pom.xml file to get the jar.
 
 # Usage
+1. run jpa..
+2. To set the bookstore owner (optional):
+
+ ```
+Command prompt on Windows:
+setx ADMIN_USERNAME "your_admin_username"
+setx ADMIN_PASSWORD "your_admin_password"
+
+
+JAR file MUST be ran from command prompt as well
+Use this command after setting env vars: java -jar AmazinOnlineBookstore-0.0.1-SNAPSHOT.jar
+
+Or you can go to Run -> Edit Configurations and set the env vars there
+like this: ADMIN_USERNAME=username;ADMIN_PASSWORD=password
+
+Terminal on MacOS:
+export ADMIN_USERNAME="your_admin_username"
+export ADMIN_PASSWORD="your_admin_username"
+
+Run these two commands before running the JAR file
+```
+4. Users can register/log in, browse, search, and filter through books.
 
 # Development Roadmap
 
@@ -23,9 +47,29 @@ Users are currently able to log in/register and browse/search/filter through boo
 * User Unit Tests
 
 ## Milestone 2 : Alpha Release
-Users will be able to add books to shopping cart
+
+In the upcoming implementation, users will have the capability to add books to their shopping cart. Additionally, a database migration tool will be implemented to enhance the inventory management system.
+
+### Upcoming Implementations:
+* Database Migration Tool
+* Inventory
+* Inventory Controller
+* Shopping Cart
+* Shopping Cart Controller
+* Checkout
+* Checkout Controller
 
 ## Milestone 3 : Final demo
+
+### Upcoming Implementations:
+* Recommendations Entity
+* Recommendations Controller
+
+# UML Diagram of Project 
+![image](https://github.com/TheDana1/AmazinOnlineBookstore/assets/89320833/3b27feb3-b27f-40ce-9ced-a37b541784e4)
+
+
+# Database Schema of Project
 
 # Known issues
 Currently, there are no known issues.

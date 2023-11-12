@@ -9,9 +9,12 @@ Amazin Bookstore is an online web application that serves as a comprehensive pla
 # Usage
 
 # Development Roadmap
-Milestone 1 : Early prototype
+
+## Milestone 1 : Early prototype
+
 Users are currently able to log in/register and browse/search/filter through books.  
-Completed Components:
+
+### Completed Components:
 * Book Entity
 * Book Controller
 * Book Unit Tests
@@ -19,9 +22,10 @@ Completed Components:
 * User Controller
 * User Unit Tests
 
-Milestone 2 : Alpha Release
+## Milestone 2 : Alpha Release
 Users will be able to add books to shopping cart
-Milestone 3 : Final demo
+
+## Milestone 3 : Final demo
 
 # Known issues
 Currently, there are no known issues.

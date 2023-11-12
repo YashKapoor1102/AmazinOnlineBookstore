@@ -8,6 +8,10 @@ package amazin.bookstore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User entity that contains a username and password.
@@ -23,8 +27,10 @@ public class User {
 
     private String username;
     private String password;
-
     private boolean isOwner;
+    @ManyToMany
+    private List<Book> purchasedBooks;
+
 
     /**
      * Constructor for User
@@ -36,6 +42,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.isOwner = isOwner;
+        this.purchasedBooks = new ArrayList<>();
     }
 
     /**
@@ -45,6 +52,7 @@ public class User {
         this.username = "";
         this.password = "";
         this.isOwner = false;
+        this.purchasedBooks = new ArrayList<>();
     }
 
     /**

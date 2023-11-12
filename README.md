@@ -10,7 +10,7 @@ Amazin Bookstore is an online web application that serves as a comprehensive pla
 
 # Development Roadmap
 Milestone 1 : Early prototype
-*
+** 
 *
 
 Milestone 2 : Alpha Release

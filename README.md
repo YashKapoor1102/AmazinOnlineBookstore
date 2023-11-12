@@ -1,17 +1,16 @@
 # AmazinOnlineBookstore
-SYSC4806 Final Project
+SYSC4806 Final Project that uses Spring Framework and H2 Database
 
 # Project Description 
 Amazin Bookstore is an online web application that serves as a comprehensive platform for bookstore owners and users. It provides bookstore owners with robust tools for managing their inventory, while also providing users with a seamless experience to browse and purchase books. Additionally, the application offers advanced features such as book recommendations and flexible filtering options
 
 # Installation Instructions
-Clone the git repository or
-run the pom.xml file to get the jar.
+1. Make sure you have Maven and Java installed on your system.
+2. Clone the git repository https://github.com/TheDana1/AmazinOnlineBookstore.git 
 
 # Usage
-1. run jpa..
+1. Run _main_ AmazinOnlineBookstore\src\main\java\amazin\bookstore\AccessingDataJpaApplication.java
 2. To set the bookstore owner (optional):
-
  ```
 Command prompt on Windows:
 setx ADMIN_USERNAME "your_admin_username"
@@ -48,7 +47,7 @@ Users are currently able to log in/register and browse/search/filter through boo
 
 ## Milestone 2 : Alpha Release
 
-In the upcoming implementation, users will have the capability to add books to their shopping cart. Additionally, a database migration tool will be implemented to enhance the inventory management system.
+In the upcoming implementation, users will have the capability to add books to their shopping cart, purchase, and view recommendations. Additionally, a database migration tool will be implemented to enhance the inventory management system.
 
 ### Upcoming Implementations:
 * Database Migration Tool
@@ -58,15 +57,13 @@ In the upcoming implementation, users will have the capability to add books to t
 * Shopping Cart Controller
 * Checkout
 * Checkout Controller
-
-## Milestone 3 : Final demo
-
-### Upcoming Implementations:
 * Recommendations Entity
 * Recommendations Controller
 
+## Milestone 3 : Final demo
+
 # UML Diagram of Project 
-![image](https://github.com/TheDana1/AmazinOnlineBookstore/assets/89320833/3b27feb3-b27f-40ce-9ced-a37b541784e4)
+![image](https://github.com/TheDana1/AmazinOnlineBookstore/assets/89320833/c2e7eb14-3d72-438c-af14-524d47cb33f1)
 
 
 # Database Schema of Project

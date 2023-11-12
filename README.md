@@ -63,7 +63,8 @@ In the upcoming implementation, users will have the capability to add books to t
 ## Milestone 3 : Final demo
 
 # UML Diagram of Project 
-![image](https://github.com/TheDana1/AmazinOnlineBookstore/assets/89320833/c2e7eb14-3d72-438c-af14-524d47cb33f1)
+![image](https://github.com/TheDana1/AmazinOnlineBookstore/assets/89320833/7754e635-0b51-4f18-9ce6-c71367ade790)
+
 
 
 # Database Schema of Project

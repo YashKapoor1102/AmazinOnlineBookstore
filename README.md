@@ -29,7 +29,7 @@ export ADMIN_PASSWORD="your_admin_username"
 
 Run these two commands before running the JAR file
 ```
-4. Users can register/log in, browse, search, and filter through books.
+3. Users can register/log in, browse, search, and filter through books.
 
 # Development Roadmap
 

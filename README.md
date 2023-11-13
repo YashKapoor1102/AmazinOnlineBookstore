@@ -68,6 +68,8 @@ In the upcoming implementation, users will have the capability to add books to t
 
 
 # Database Schema of Project
+![DatabaseFile](https://github.com/TheDana1/AmazinOnlineBookstore/assets/44479056/d4e0b6ff-afa4-4d5f-ba45-cebcc389c191)
+
 
 # Known issues
 Currently, there are no known issues.

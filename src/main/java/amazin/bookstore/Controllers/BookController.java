@@ -49,12 +49,18 @@ public class BookController {
         return "book";
     }
 
+    /***
+     * sorts books alphabetically based on title
+     * @param model Model Object
+     * @return view template
+     */
     @GetMapping("/books/sortByTitle")
     public String sortByTitle(Model model) {
         List<Book> books = (List<Book>) bookRepository.findAll(Sort.by(Sort.Direction.ASC, "title"));
         model.addAttribute("books", books);
         return "book";
     }
+
 
     @GetMapping("/books/sortByAuthor")
     public String sortByAuthor(Model model) {
@@ -82,6 +88,8 @@ public class BookController {
         System.out.println("New book added: " + newBook.getTitle());
         return "redirect:/books";
     }
+
+
 
 
 

@@ -118,4 +118,48 @@ public class Book {
         this.description = description;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Book)) {
+            return false;
+        }
+
+        Book book = (Book) o;
+
+
+
+        if (
+                book.getIsbn().equals(this.getIsbn()) &&
+                book.getTitle().equals(this.getTitle()) &&
+                book.getAuthor().equals(this.getAuthor()) &&
+                book.getPublisher().equals(this.getPublisher()) &&
+                book.getDescription().equals(this.getDescription()) &&
+                book.getId() == this.getId())
+
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Integer.parseInt(this.getIsbn());
+    }
 }

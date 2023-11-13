@@ -29,7 +29,8 @@ export ADMIN_PASSWORD="your_admin_username"
 
 Run these two commands before running the JAR file
 ```
-3. Users can register/log in, browse, search, and filter through books.
+3. Access localhost at http://localhost:8080/books and http://localhost:8080/user/register for now
+4. Users can register/log in, browse, search, and filter through books.
 
 # Development Roadmap
 

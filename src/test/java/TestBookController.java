@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -21,6 +22,9 @@ class TestBookController {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Value(value="${local.server.port}")
+    private int port;
 
     HttpHeaders headers = new HttpHeaders();
 
@@ -39,7 +43,7 @@ class TestBookController {
     void listBooks() {
 
         //view page
-        String url = "http://localhost:8080/books";
+        String url = "http://localhost:" + port + "/books";
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
         assertThat(responseEntity.getBody()).contains("Amazin Bookstore");
         assertThat(responseEntity.getBody()).contains("Search/Filter");
@@ -55,12 +59,12 @@ class TestBookController {
     @Test
     void addBook() {
         //Add book
-        String url = "http://localhost:8080/addBook";
+        String url = "http://localhost:" + port + "/addBook";
         HttpEntity<String> request = new HttpEntity<>("isbn=11111111&title=Cloudy+Sky&author=Bob+West&publisher=tester+Co&description=fantasy", headers);
         restTemplate.postForEntity(url, request, String.class);
 
         //Check if it's been added
-        String url2 = "http://localhost:8080/books";
+        String url2 = "http://localhost:" + port + "/books";
         ResponseEntity<String> responseEntity2 = restTemplate.getForEntity(url2, String.class);
         assertThat(responseEntity2.getBody()).contains("Cloudy Sky");
     }
@@ -72,14 +76,14 @@ class TestBookController {
     @Test
     void search() {
         //Adding books
-        String url = "http://localhost:8080/addBook";
+        String url = "http://localhost:" + port + "/addBook";
         HttpEntity<String> request = new HttpEntity<>("isbn=12345&title=Red+Dragon&author=Jacob+B&publisher=Pub+Corp&description=fantasy", headers);
         restTemplate.postForEntity(url, request, String.class);
         HttpEntity<String> request2 = new HttpEntity<>("isbn=222222&title=Little+Mermaid&author=Sabrina+B&publisher=Trust&description=disney", headers);
         restTemplate.postForEntity(url, request2, String.class);
 
         //Making sure only relevant result appears
-        String url2 = "http://localhost:8080/search";
+        String url2 = "http://localhost:" + port + "/search";
         HttpEntity<String> request3 = new HttpEntity<>("query=Red+Dragon", headers);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url2,request3, String.class);
         assertThat(responseEntity.getBody()).contains("Red Dragon");
@@ -93,7 +97,7 @@ class TestBookController {
      */
     @Test
     void sortByTitle() {
-        String url = "http://localhost:8080/books/sortByTitle";
+        String url = "http://localhost:" + port + "/books/sortByTitle";
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
         Document document = Jsoup.parse(responseEntity.getBody());
         Elements tableRows = document.select("tbody tr");
@@ -110,7 +114,7 @@ class TestBookController {
      */
     @Test
     void sortByAuthor() {
-        String url = "http://localhost:8080/books/sortByAuthor";
+        String url = "http://localhost:" + port + "/books/sortByAuthor";
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
         Document document = Jsoup.parse(responseEntity.getBody());
         Elements tableRows = document.select("tbody tr");

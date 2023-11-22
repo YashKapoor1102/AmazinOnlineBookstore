@@ -5,10 +5,7 @@
 
 package amazin.bookstore;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +16,16 @@ import java.util.List;
  * There is only one bookstore owner, but many users can register on the registration page.
  */
 @Entity
+@Table(name = "user")
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
     private String password;
     private boolean isOwner;
-    @ManyToMany
-    private List<Book> purchasedBooks;
-
 
     /**
      * Constructor for User
@@ -42,7 +37,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.isOwner = isOwner;
-        this.purchasedBooks = new ArrayList<>();
     }
 
     /**
@@ -52,7 +46,6 @@ public class User {
         this.username = "";
         this.password = "";
         this.isOwner = false;
-        this.purchasedBooks = new ArrayList<>();
     }
 
     /**

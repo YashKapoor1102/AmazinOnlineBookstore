@@ -7,6 +7,7 @@ import jakarta.persistence.*;
  * @author Dana El Sherif
  */
 @Entity
+@Table(name = "book")
 public class Book {
     private String isbn;
     private String title;
@@ -14,7 +15,7 @@ public class Book {
     private String publisher;
     private String description;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**

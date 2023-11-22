@@ -1,13 +1,15 @@
 package amazin.bookstore;
 
 import amazin.bookstore.repositories.UserRepository;
+import org.flywaydb.core.Flyway;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+@EntityScan(basePackages = "amazin.bookstore")
 @SpringBootApplication
 public class AccessingDataJpaApplication {
 
@@ -15,6 +17,14 @@ public class AccessingDataJpaApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AccessingDataJpaApplication.class, args);
+    }
+
+    @Bean
+    public CommandLineRunner runFlyway(Flyway flyway) {
+        return args -> {
+            flyway.migrate();
+            log.info("Flyway migration completed.");
+        };
     }
 
     @Bean

@@ -1,5 +1,3 @@
--- V1__create_book_table.sql
-
 CREATE TABLE if not exists Book (
                       id BIGINT AUTO_INCREMENT PRIMARY KEY,
                       isbn VARCHAR(255) NOT NULL,

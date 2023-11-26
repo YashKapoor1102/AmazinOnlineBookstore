@@ -23,6 +23,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ShoppingCart shoppingCart;
+
     private String username;
     private String password;
     private boolean isOwner;
@@ -120,4 +123,21 @@ public class User {
         this.password = password;
     }
 
+    public ShoppingCart getShoppingCart() {
+        return this.shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", title='" + password + '\'' +
+                '}';
+    }
 }

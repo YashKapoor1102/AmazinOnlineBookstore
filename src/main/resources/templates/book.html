@@ -31,6 +31,7 @@
     <input type="submit" value="View Cart">
 </form>
 
+
 <table>
     <thead>
     <tr>
@@ -50,6 +51,12 @@
         <td th:text="${book.author}"></td>
         <td th:text="${book.description}"></td>
         <td th:text="${book.publisher}"></td>
+        <td>
+        <form th:action="@{/cart/add}" method="post">
+            <input type="hidden" name="bookId" th:value="${book.id}">
+            <button type="submit">Add to Cart</button>
+        </form>
+        </td>
     </tr>
     </tbody>
 </table>

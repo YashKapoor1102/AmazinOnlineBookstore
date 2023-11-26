@@ -5,6 +5,7 @@
 package amazin.bookstore.repositories;
 
 import amazin.bookstore.User;
+import jakarta.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -18,4 +19,12 @@ public interface UserRepository extends CrudRepository<User, Long> {
      * @return  the user with the specified username or null if the username does not exist
      */
     User findByUsername(String username);
+
+    /**
+     * Deletes a user entity by its username
+     * @param username      a String, the username of the user to be retrieved
+     */
+    @Transactional
+    void deleteByUsername(String username);
+
 }

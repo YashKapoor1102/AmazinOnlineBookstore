@@ -24,6 +24,8 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     Book findById(long id);
     Book findByIsbn(String isbn);
 
+    Book deleteById(long id);
+
     List<Book> findByPublisher(String publisher);
 
     Object findAll(Sort title);

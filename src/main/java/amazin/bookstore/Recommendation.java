@@ -2,10 +2,8 @@ package amazin.bookstore;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-
 /**
- * Recommendation entities contain a books which is
+ * Recommendation entities contain a book which is
  * recommended to a user based on their purchase history.
  * @author Henry Lin
  */
@@ -19,7 +17,7 @@ public class Recommendation {
         OTHERS_PURCHASED (3),
         SAME_GENRE (5);
 
-        private int value;
+        private final int value;
 
         Weighting (int value) { this.value = value; }
 
@@ -28,7 +26,7 @@ public class Recommendation {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @ManyToOne
     private User user;
@@ -106,7 +104,7 @@ public class Recommendation {
      * Get the recommendation's id
      * @return The id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -114,7 +112,7 @@ public class Recommendation {
      * Set the recommendation's id
      * @param id The id to set
      */
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

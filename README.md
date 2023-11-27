@@ -1,5 +1,5 @@
 # AmazinOnlineBookstore
-SYSC4806 Final Project that uses Spring Framework and H2 Database
+SYSC4806 Final Project that uses Spring Framework and H2 Database that persists data by storing it in a file.
 
 # Project Description 
 Amazin Bookstore is an online web application that serves as a comprehensive platform for bookstore owners and users. It provides bookstore owners with robust tools for managing their inventory, while also providing users with a seamless experience to browse and purchase books. Additionally, the application offers advanced features such as book recommendations and flexible filtering options
@@ -48,7 +48,7 @@ Users are currently able to log in/register and browse/search/filter through boo
 
 ## Milestone 2 : Alpha Release
 
-In the upcoming implementation, users will have the capability to add books to their shopping cart, purchase, and view recommendations. Additionally, a database migration tool will be implemented to enhance the inventory management system.
+In the upcoming implementation, users will have the capability to add books to their shopping cart, remove books from their shopping cart, purchase them, and view recommendations. Additionally, a database migration tool will be implemented to enhance the inventory management system.
 
 ### Upcoming Implementations:
 * Database Migration Tool
@@ -56,12 +56,12 @@ In the upcoming implementation, users will have the capability to add books to t
 * Inventory Controller
 * Shopping Cart
 * Shopping Cart Controller
-* Checkout
-* Checkout Controller
+* Checkout functionality 
 * Recommendations Entity
 * Recommendations Controller
 
 ## Milestone 3 : Final demo
+
 
 # UML Diagram of Project 
 ![image](https://github.com/TheDana1/AmazinOnlineBookstore/assets/89320833/7754e635-0b51-4f18-9ce6-c71367ade790)

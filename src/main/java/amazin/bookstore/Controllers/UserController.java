@@ -5,6 +5,7 @@
 
 package amazin.bookstore.Controllers;
 
+import amazin.bookstore.Book;
 import jakarta.servlet.http.HttpSession;
 import amazin.bookstore.ShoppingCart;
 import amazin.bookstore.User;
@@ -106,6 +107,23 @@ public class UserController {
         model.addAttribute("users", users);
         return "listUsers";
     }
+
+
+    @GetMapping("/purchased-books")
+    public String listPurchasedBooks(HttpSession session, Model model) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/user/login";
+        }
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return "redirect:/user/login";
+        }
+        List<Book> purchasedBooks = user.getPurchasedBooks();
+        model.addAttribute("purchasedBooks", purchasedBooks);
+        return "listPurchasedBooks";
+    }
+
 
 }
 

@@ -8,27 +8,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-
+/**
+ * REST Controller for Inventory entity
+ * @author Yaw Asamoah
+ */
 @RestController
 public class InventoryController {
 
 
+    /**
+     * Repository for Inventory entity
+     */
     @Autowired
     private InventoryRepository inventoryRepository;
 
+    /**
+     * Repository for Book entity
+     */
     @Autowired
     private BookRepository bookRepository;
 
 
+    /**
+     * Creates a new Inventory
+     * @return      Inventory, the new inventory added
+     */
     @PostMapping("/inventory")
     public Inventory createInventory (){
         Inventory inventoryManager = new Inventory();
         return inventoryRepository.save(inventoryManager);
     }
 
-
-
-
+    /**
+     * Gets the stock for a book using the book id and the inventory id
+     *
+     * @param bookId        int, the id of the book specified
+     * @param inventoryId   int, the id of the inventory that the book is in
+     * @return              int, the current stock for the specified book
+     */
     @GetMapping("/inventory/{inventoryId}/book/{bookId}")
     int getBookStockByBookIdInventoryId(@PathVariable int bookId, @PathVariable int inventoryId) {
 
@@ -41,6 +58,12 @@ public class InventoryController {
         return stock;
     }
 
+    /**
+     * Gets the stock for a book only using the book id
+     *
+     * @param bookId        int, the id of the book specified
+     * @return              int, the current stock for the specified book
+     */
     @GetMapping("/inventory/book/{bookId}")
     int getBookStockByBookId(@PathVariable int bookId) {
 
@@ -59,19 +82,36 @@ public class InventoryController {
         return stock;
     }
 
-
-
+    /**
+     * Gets all's the inventory entities
+     *
+     * @return      List<Inventory>, list of all the inventory entities in the database
+     */
     @GetMapping(value = "/inventory")
     public List<Inventory> getAllInventories() {
         return (List<Inventory>) inventoryRepository.findAll();
     }
 
+    /**
+     * Get a singular inventory using it's id
+     *
+     * @param inventoryId       int, the inventory id
+     * @return                  Inventory, the inventory associated with the id
+     */
     @GetMapping(value = "/inventory/{inventoryId}")
     public Inventory getInventoryById(@PathVariable int inventoryId) {
         return inventoryRepository.findById(inventoryId);
     }
 
 
+    /**
+     * Puts the specified stock for a particular book using book id and the inventory id
+     *
+     * @param inventoryId       int, the id of the inventory that the book is in
+     * @param bookId            int, the id of the book specified
+     * @param stock             int, the new stock a book should have
+     * @return                  Inventory, the inventory associated with the inventory id
+     */
     @PutMapping("/inventory/{inventoryId}/book/{bookId}/{stock}")
     public Inventory putBookStockByBookIdInventoryId (@PathVariable int inventoryId, @PathVariable int bookId, @PathVariable int stock)
     {
@@ -83,21 +123,20 @@ public class InventoryController {
     }
 
 
+    /**
+     * Puts the specified stock for a particular book using book id only. Will add to an existing inventory
+     * if the book is already there, or to the default inventory if not.
+     *
+     * @param bookId         int, the id of the book specified
+     * @param stock          int, the new stock a book should have
+     * @return              Inventory, the current inventory after adding the new book stock
+     */
     @PutMapping("/inventory/book/{bookId}/{stock}")
-    public Inventory putBookStockByBookIdInventoryId (@PathVariable int bookId, @PathVariable int stock)
+    public Inventory putBookStockByBookId (@PathVariable int bookId, @PathVariable int stock)
     {
 
         Book book = bookRepository.findById(bookId);
-        Inventory inventoryManager = null;
-
-        for (Inventory inventoryManager2: getAllInventories())
-        {
-            if(inventoryManager2.containsBook(book))
-            {
-                inventoryManager = inventoryManager2;
-                break;
-            }
-        }
+        Inventory inventoryManager = findInventoryFromBook(book);
 
         if (inventoryManager == null)
         {
@@ -108,39 +147,44 @@ public class InventoryController {
         return inventoryRepository.save(inventoryManager);
     }
 
+    /**
+     * Deletes a singular inventory from database
+     *
+     * @param inventoryId        int, the id of the inventory that the book is in
+     */
     @DeleteMapping("/inventory/{inventoryId}")
     void deleteInventory(@PathVariable int inventoryId) {
         inventoryRepository.deleteById(inventoryId);
     }
 
-    @PutMapping("/inventory/{inventoryId}/removeBook/{bookId}/{stock}")
-    public Inventory removeBookStockByBookIdInventoryId (@PathVariable int inventoryId, @PathVariable int bookId, @PathVariable int stock)
+    /**
+     * Remove a singular book and stock from inventory using book id and inventory id
+     *
+     * @param inventoryId       int, the id of the inventory that the book is in
+     * @param bookId            int, the id of the book specified
+     * @return                  Inventory, the current inventory after removing the book
+     */
+    @PutMapping("/inventory/{inventoryId}/removeBook/{bookId}")
+    public Inventory removeBookStockByBookIdInventoryId (@PathVariable int inventoryId, @PathVariable int bookId)
     {
-
         Book book = bookRepository.findById(bookId);
         Inventory inventoryManager = inventoryRepository.findById(inventoryId);
         inventoryManager.removeBook(book);
         return inventoryRepository.save(inventoryManager);
     }
 
-
-    @PutMapping("/inventory/removeBook/{bookId}/{stock}")
-    public Inventory removeBookStockByBookIdInventoryId (@PathVariable int bookId, @PathVariable int stock)
+    /**
+     * Remove a singular book and stock from inventory using book id
+     *
+     * @param bookId        int, the id of the book specified
+     * @return              Inventory, the current inventory after removing the book
+     */
+    @PutMapping("/inventory/removeBook/{bookId}")
+    public Inventory removeBookStockByBookId (@PathVariable int bookId)
     {
 
         Book book = bookRepository.findById(bookId);
-        Inventory inventoryManager = null;
-
-
-
-        for (Inventory inventoryManager2: getAllInventories())
-        {
-            if(inventoryManager2.containsBook(book))
-            {
-                inventoryManager = inventoryManager2;
-                break;
-            }
-        }
+        Inventory inventoryManager = findInventoryFromBook(book);
 
         if (inventoryManager == null)
         {
@@ -151,7 +195,12 @@ public class InventoryController {
         return inventoryRepository.save(inventoryManager);
     }
 
-    public int getDefaultInventoryId()
+    /**
+     * Gets the id of the default inventory, which is the first inventory entity in the database
+     *
+     * @return      int, the id of the first inventory entity in the database
+     */
+    private int getDefaultInventoryId()
     {
         int id = 1;
 
@@ -161,87 +210,66 @@ public class InventoryController {
         return id;
     }
 
+
     /**
+     * Puts the increased stock for a particular book using book id only
+     *
+     * @param bookId         int, the id of the book specified
+     * @param stock          int, the stock that will be increased from the current book stock
+     * @return              Inventory, the current inventory after increasing the book stock
+     */
+    @PutMapping("/inventory/book/{bookId}/increase/{stock}")
+    public Inventory increaseBookStockByBookId (@PathVariable int bookId, @PathVariable int stock)
+    {
 
-     @PostMapping("/inventory/{id}/{stock}")
-     public InventoryManager createInventory2 (@PathVariable int id, @PathVariable int stock){
-     Book book = bookRepository.findById(id);
-     InventoryManager inventoryManager;
+        Book book = bookRepository.findById(bookId);
+        Inventory inventoryManager = findInventoryFromBook(book);
 
-
-     if (inventoryManagerRepository.findById(InventoryManagerId) !=null)
-     {
-     inventoryManager = inventoryManagerRepository.findById(InventoryManagerId);
-     }
-     else {
-     inventoryManager = new InventoryManager();
-     }
-
-     inventoryManager.setProductStock(book, stock);
-
-     return inventoryManagerRepository.save(inventoryManager);
-     }
-
-
-    @PutMapping("/inventory/{id}/{stock}")
-    public Inventory putBookStockByBookIdInventoryId (@PathVariable int id, @PathVariable int stock, @PathVariable Optional<Integer> optionalInventoryId){
-
-        Book book = bookRepository.findById(id);
-        Inventory inventoryManager = null;
-        int defaultInventoryId = 1;
-
-        if (optionalInventoryId.isPresent()) {
-            int inventoryId = optionalInventoryId.get();
-            inventoryManager = inventoryRepository.findById(inventoryId);
-        }
-        else
+        if (inventoryManager == null)
         {
-            for (Inventory inventoryManager2: getAllInventoryManagers())
-            {
-                if(inventoryManager2.containsBook(book))
-                {
-                    inventoryManager = inventoryManager2;
-                    break;
-                }
-            }
-
-            if (inventoryManager == null)
-            {
-                inventoryManager = inventoryRepository.findById(defaultInventoryId);
-            }
+            return null;
         }
 
-        inventoryManager.setBookStock(book, stock);
+        inventoryManager.increaseBookStock(book, stock);
         return inventoryRepository.save(inventoryManager);
     }
 
 
-     @GetMapping("/Inventory/{bookId}")
-     int getInventoryStockByBookId(@PathVariable int bookId, @PathVariable Optional<Integer> optionalInventoryId) {
+    /**
+     * Puts the decreased stock for a particular book using book id only
+     *
+     * @param bookId         int, the id of the book specified
+     * @param stock          int, the stock that will be removed from the current book stock
+     * @return              Inventory, the current inventory after decreasing the book stock
+     */
+    @PutMapping("/inventory/book/{bookId}/decrease/{stock}")
+    public Inventory decreaseBookStockByBookId (@PathVariable int bookId, @PathVariable int stock)
+    {
 
-     Book book = bookRepository.findById(bookId);
-     int stock = -1;
+        Book book = bookRepository.findById(bookId);
+        Inventory inventoryManager = findInventoryFromBook(book);
 
-     if (optionalInventoryId.isPresent()) {
-     int inventoryId = optionalInventoryId.get();
-     Inventory inventoryManager = inventoryManagerRepository.findById(inventoryId);
-     stock = inventoryManager.getBookStock(book);
-     }
-     else
-     {
-     for (Inventory inventoryManager: getAllInventoryManagers())
-     {
-     if(inventoryManager.containsBook(book))
-     {
-     stock = inventoryManager.getBookStock(book);
-     break;
-     }
-     }
-     }
+        if (inventoryManager == null)
+        {
+            return null;
+        }
 
-     return stock;
-     }
-     **/
+        inventoryManager.decreaseBookStock(book, stock);
+        return inventoryRepository.save(inventoryManager);
+    }
 
-    
+    private Inventory findInventoryFromBook(Book book)
+    {
+        Inventory inventoryManager = null;
+
+        for (Inventory inventoryManager2: getAllInventories())
+        {
+            if(inventoryManager2.containsBook(book))
+            {
+                return inventoryManager2;
+            }
+        }
+
+        return inventoryManager;
+    }
 }

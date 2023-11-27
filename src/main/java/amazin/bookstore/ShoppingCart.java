@@ -92,7 +92,7 @@ public class ShoppingCart {
      * @param book  a Book object, the book to be added to the shopping cart
      */
     public void addBook(Book book) {
-        this.books.add(book);
+        books.add(book);
     }
 
     /**

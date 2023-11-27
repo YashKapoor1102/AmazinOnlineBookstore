@@ -16,6 +16,8 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
     List<Book> findByTitleContainingOrAuthorContainingOrPublisherContainingOrDescriptionContainingOrIsbnContaining(String isbn, String description, String author, String publisher, String title);
 
+    List<Book> findByPriceBetween(double minPrice, double maxPrice);
+
 
     //Below functions might be used by other classes. If not used in future implementations, they can be deleted.
     List<Book> findByAuthor(String author);

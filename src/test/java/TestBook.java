@@ -19,7 +19,7 @@ class TestBook {
      */
     @BeforeEach
     public void initialize() {
-        book = new Book("12345", "Red Dragon", "Jacob B", "Pub Corp", "fantasy" );
+        book = new Book("12345", "Red Dragon", "Jacob B", "Pub Corp", "fantasy", 12.5 );
     }
 
     /**
@@ -106,4 +106,24 @@ class TestBook {
         assertEquals("Horror", book.getDescription());
 
     }
+
+    /**
+     * Tests get price method of book
+     */
+    @Test
+    void getPrice() {
+        assertEquals(12.5, book.getPrice());
+
+    }
+
+    /**
+     * Tests set price method of book
+     */
+    @Test
+    void setPrice() {
+        book.setPrice(3.00);
+        assertEquals(3.00, book.getPrice());
+
+    }
+
 }

@@ -10,51 +10,50 @@
     </style>
 </head>
 <body>
-    <!-- Add Book to Cart Form -->
-    <form action="/cart/add" method="post">
-        <label for="idAdd">Book ID:</label>
-        <input type="number" id="idAdd" name="bookId" required>
-        <input type="submit" value="Add to Cart by Book ID">
-    </form>
-    <br>
-    <!-- Remove Book from Cart Form -->
-    <form action="/cart/remove" method="post">
-        <label for="idRemove">Book ID:</label>
-        <input type="number" id="idRemove" name="bookId" required>
-        <input type="submit" value="Remove from Cart by Book ID">
-    </form>
 
-    <div th:if="${bookNotFound}" class="error" th:text="${bookNotFound}"></div>
+<div th:if="${bookNotFound}" class="error" th:text="${bookNotFound}"></div>
 
-    <!-- Conditional block to render only if bookNotFound is not true -->
-    <th:block th:unless="${bookNotFound}">
-        <h1>Your Shopping Cart</h1>
+<!-- Conditional block to render only if bookNotFound is not true -->
+<th:block th:unless="${bookNotFound}">
+    <h1>Your Shopping Cart</h1>
 
-        <div>
-            <table>
-                <thead>
-                <tr>
-                    <th>Book ID</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="book : ${cart.books}">
-                    <td class="column-space" th:text="${book.id}">Book ID</td>
-                    <td class="column-space" th:text="${book.title}">Book Title</td>
-                    <td class="column-space" th:text="${book.author}">Author Name</td>
-                </tr>
-                </tbody>
-            </table>
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Book ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Action</th> <!-- Added column for the "Remove" button -->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${cart.books}">
+                <td class="column-space" th:text="${book.id}">Book ID</td>
+                <td class="column-space" th:text="${book.title}">Book Title</td>
+                <td class="column-space" th:text="${book.author}">Author Name</td>
+                <td class="column-space">
+                    <form th:action="@{/cart/remove}" method="post">
+                        <input type="hidden" name="bookId" th:value="${book.id}">
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-            <div th:if="${cart == null || cart.books.isEmpty()}">
-                <p>Your shopping cart is empty.</p>
-            </div>
-            <br>
+        <div th:if="${cart == null || cart.books.isEmpty()}">
+            <p>Your shopping cart is empty.</p>
         </div>
-    </th:block>
-    <br>
-    <a th:href="@{/books}" class="continue-shopping">Continue Shopping</a>
+
+        <!-- Add the "Checkout" button -->
+        <form th:action="@{/cart/checkout/{userId}(userId=${user.id})}" method="post">
+            <button type="submit">Checkout</button>
+        </form>
+        <br>
+    </div>
+</th:block>
+<br>
+<a th:href="@{/books}" class="continue-shopping">Continue Shopping</a>
 </body>
 </html>

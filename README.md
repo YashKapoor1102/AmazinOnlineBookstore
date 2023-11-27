@@ -67,10 +67,10 @@ In this implementation, users have the capability to add books to their shopping
 For the final version of the project, all minor details like error handling and webpage appearance will be improved.
 
 ### Upcoming Implementations:
--Upgrade Error Handling for shoppingCart Functionality
--Upgrade User Registration
--Improve Checkout Functionality 
--Add Book images if possible
+*Upgrade Error Handling for shoppingCart Functionality
+*Upgrade User Registration
+*Improve Checkout Functionality 
+*Add Book images if possible
 
 # UML Diagram of Project 
 ![UML Class Diagram for Amazin Bookstore drawio (1)](https://github.com/TheDana1/AmazinOnlineBookstore/assets/78821595/787b430c-c3dd-4a24-a688-276719e28cfb)

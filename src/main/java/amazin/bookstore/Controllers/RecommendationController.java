@@ -63,7 +63,7 @@ public class RecommendationController {
         for (Book b : catalogue) {
             if (recommendationRepository.findByUserAndBook(user, b) == null) {
                 for (Book b1 : history) {
-                    if (b != b1) {
+                    if (!history.contains(b)) {
                         if (b1.getAuthor().equals(b.getAuthor())) {
                             recommendationRepository.save(new Recommendation(user, b, Weighting.SAME_AUTHOR.value()));
                             break;

@@ -77,7 +77,8 @@ For the final version of the project, all minor details like error handling and 
 
 
 # Database Schema of Project
-![DatabaseFile](https://github.com/TheDana1/AmazinOnlineBookstore/assets/44479056/d4e0b6ff-afa4-4d5f-ba45-cebcc389c191)
+![DatabaseSchemaMilestone2](https://github.com/TheDana1/AmazinOnlineBookstore/assets/44479056/04e74735-73e5-497f-b1ca-1737827a194c)
+
 
 
 # Known issues

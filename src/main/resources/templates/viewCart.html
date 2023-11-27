@@ -45,6 +45,11 @@
         <div th:if="${cart == null || cart.books.isEmpty()}">
             <p>Your shopping cart is empty.</p>
         </div>
+
+        <!-- Add the "Checkout" button -->
+        <form th:action="@{/cart/checkout/{userId}(userId=${user.id})}" method="post">
+            <button type="submit">Checkout</button>
+        </form>
         <br>
     </div>
 </th:block>

@@ -10,10 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller Class for managing the shopping cart for each user.
@@ -30,6 +27,11 @@ public class ShoppingCartController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public ShoppingCartController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     /**
      * Adds a book to the shopping cart using the
@@ -68,6 +70,23 @@ public class ShoppingCartController {
         } else {
             return "redirect:/login";
         }
+    }
+
+    @PostMapping("/checkout/{userId}")
+    public String checkout(@PathVariable Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(); // You might want to handle the case when the user is not found
+        ShoppingCart shoppingCart = user.getShoppingCart();
+
+        // Move books from the shopping cart to purchased books
+        for (Book book : shoppingCart.getBooks()) {
+            user.addPurchasedBook(book);
+        }
+
+        // Clear the shopping cart
+        shoppingCart.getBooks().clear();
+        userRepository.save(user);
+
+        return "redirect:/books"; // Redirect to the book listing page or any other page you prefer
     }
 
     /**
@@ -127,6 +146,7 @@ public class ShoppingCartController {
         ShoppingCart cart = user != null ? user.getShoppingCart() : null;
 
         model.addAttribute("cart", cart);
+        model.addAttribute("user", user);  // Add user to the model
 
         return "viewCart";
     }

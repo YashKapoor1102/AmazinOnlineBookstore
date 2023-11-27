@@ -25,8 +25,8 @@ public class TestShoppingCart {
     public void initialize() {
         shoppingCart = new ShoppingCart();
         user = new User("TestUser", "TestPassword", false);
-        book1 = new Book("123456789", "book1", "Author1", "Publisher1", "Description1");
-        book2 = new Book("987654321", "book2", "Author2", "Publisher2", "Description2");
+        book1 = new Book("123456789", "book1", "Author1", "Publisher1", "Description1", 5);
+        book2 = new Book("987654321", "book2", "Author2", "Publisher2", "Description2", 18);
     }
 
     /**

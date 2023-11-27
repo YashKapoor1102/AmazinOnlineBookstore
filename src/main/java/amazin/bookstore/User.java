@@ -26,9 +26,18 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private ShoppingCart shoppingCart;
 
+    @ManyToMany
+    @JoinTable(
+            name = "purchasedbooks",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PURCHASEDBOOKS_ID")
+    )
+    private List<Book> purchasedbooks;
+
     private String username;
     private String password;
     private boolean isOwner;
+
 
     /**
      * Constructor for User
@@ -49,6 +58,23 @@ public class User {
         this.username = "";
         this.password = "";
         this.isOwner = false;
+    }
+
+
+
+    public List<Book> getPurchasedBooks() {
+        return purchasedbooks;
+    }
+
+    public void setPurchasedBooks(List<Book> purchasedBooks) {
+        this.purchasedbooks = purchasedBooks;
+    }
+
+    public void addPurchasedBook(Book book) {
+        if (purchasedbooks == null) {
+            purchasedbooks = new ArrayList<>();
+        }
+        purchasedbooks.add(book);
     }
 
     /**

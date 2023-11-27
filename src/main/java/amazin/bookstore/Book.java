@@ -16,9 +16,12 @@ public class Book {
     private String author;
     private String publisher;
     private String description;
+
+    private double price;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     /**
      * The default constructor for Book
@@ -32,17 +35,37 @@ public class Book {
      * @param author string author of book
      * @param publisher string publisher of book
      * @param description string description of book
+     * @param price double price of book
      */
-    public Book(String isbn, String title, String author, String publisher, String description) {
+    public Book(String isbn, String title, String author, String publisher, String description, double price) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.description = description;
+        this.price = price;
     }
 
     public Long getId() {
         return id;
+    }
+
+
+    /**
+     * Sets the price
+     * @return price
+     */
+    public double getPrice() {
+        return price;
+    }
+
+
+    /**
+     * Gets the price
+     * @param price double price of book
+     */
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     /**

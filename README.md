@@ -58,8 +58,6 @@ In this implementation, users have the capability to add books to their shopping
 * Shopping Cart Unit Tests
 * User Unit Tests editing
 * Book Unit Test Editing
-  
-??? STATUS???
 * Inventory
 * Inventory Controller
 * Recommendations Entity
@@ -75,7 +73,7 @@ For the final version of the project, all minor details like error handling and 
 -Add Book images if possible
 
 # UML Diagram of Project 
-![image](https://github.com/TheDana1/AmazinOnlineBookstore/assets/89320833/7754e635-0b51-4f18-9ce6-c71367ade790)
+![UML Class Diagram for Amazin Bookstore drawio (1)](https://github.com/TheDana1/AmazinOnlineBookstore/assets/78821595/787b430c-c3dd-4a24-a688-276719e28cfb)
 
 
 # Database Schema of Project

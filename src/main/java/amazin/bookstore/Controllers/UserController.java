@@ -5,12 +5,15 @@
 
 package amazin.bookstore.Controllers;
 
+import jakarta.servlet.http.HttpSession;
+import amazin.bookstore.ShoppingCart;
 import amazin.bookstore.User;
 import amazin.bookstore.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -49,6 +52,11 @@ public class UserController {
             model.addAttribute("registrationError", "Username already exists. Please choose another one.");
             return "registerUser";
         }
+
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        user.setShoppingCart(shoppingCart);
+
         userRepository.save(user);
         return "redirect:/user/login";
     }
@@ -71,12 +79,15 @@ public class UserController {
      * @return  the view template of the books page if there are no errors, the login page otherwise
      */
     @PostMapping("/login")
-    public String loginUser(@RequestParam String username, @RequestParam String password, Model model) {
+    public String loginUser(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         User user = userRepository.findByUsername(username);
+
 //        if(user.isOwner()) {
 //             return ""    // Redirect to appropriate page - Commented out until the view template is created
 //        }
         if (user != null && password.equals(user.getPassword())) {
+            session.setAttribute("userId", user.getId());
+
             return "redirect:/books";
         } else {
             model.addAttribute("loginError", "Invalid username or password. Try again!");

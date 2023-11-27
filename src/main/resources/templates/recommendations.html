@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Recommendations</title>
+</head>
+<body>
+
+<h1>My Recommendations</h1>
+    <a th:href="@{/recommendations/refresh}">Refresh</a>
+    <div th:each="book : ${recommendations}">
+        <p th:text="${book.title}"></p>
+    </div>
+
+</body>
+</html>

@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -36,14 +37,18 @@ public class RecommendationController {
         this.bookRepository = bookRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public String showRecommendations(HttpSession session, Model model) {
         if (session.getAttribute("userId") == null) {
             return "redirect:/user/login";
         }
         User user = userRepository.findById((Long) session.getAttribute("userId")).orElseThrow();
         List<Recommendation> recommendations = recommendationRepository.findByUserOrderByWeightDesc(user);
-        model.addAttribute("recommendations", recommendations);
+        ArrayList<Book> recommendedBooks = new ArrayList<>();
+        for (Recommendation r : recommendations) {
+            recommendedBooks.add(r.getBook());
+        }
+        model.addAttribute("recommendations", recommendedBooks);
         return "recommendations";
     }
 
@@ -56,13 +61,16 @@ public class RecommendationController {
         List<Book> catalogue = (List<Book>) bookRepository.findAll(Sort.unsorted());
 
         for (Book b : catalogue) {
-            if (recommendationRepository.findByUserAndBook(user, b) != null) {
+            if (recommendationRepository.findByUserAndBook(user, b) == null) {
                 for (Book b1 : history) {
-                    if (b1.getAuthor().equals(b.getAuthor())) {
-                        recommendationRepository.save(new Recommendation(user, b, Weighting.SAME_AUTHOR.value()));
-                        break;
-                    } else if (b1.getDescription().equals(b.getDescription())) {
-                        recommendationRepository.save(new Recommendation(user, b, Weighting.SAME_GENRE.value()));
+                    if (b != b1) {
+                        if (b1.getAuthor().equals(b.getAuthor())) {
+                            recommendationRepository.save(new Recommendation(user, b, Weighting.SAME_AUTHOR.value()));
+                            break;
+                        } else if (b1.getDescription().equals(b.getDescription())) {
+                            recommendationRepository.save(new Recommendation(user, b, Weighting.SAME_GENRE.value()));
+                            break;
+                        }
                     }
                 }
             }

@@ -20,4 +20,6 @@ public interface RecommendationRepository extends CrudRepository<Recommendation,
     List<Recommendation> findByBook(Book book);
 
     List<Recommendation> findByUserOrderByWeightDesc(User user);
+
+    Recommendation findByUserAndBook(User user, Book book);
 }

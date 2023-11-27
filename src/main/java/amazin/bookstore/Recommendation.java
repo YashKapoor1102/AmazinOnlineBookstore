@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 public class Recommendation {
 
     public enum Weighting {
-        SAME_AUTHOR (10),
+        SAME_AUTHOR (7),
         OTHERS_PURCHASED (3),
         SAME_GENRE (5);
 
@@ -25,13 +25,15 @@ public class Recommendation {
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
     /** Integer weight determines how relevant the recommendation is (higher is more relevant) */

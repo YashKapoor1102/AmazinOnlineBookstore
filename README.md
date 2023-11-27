@@ -1,5 +1,5 @@
 # AmazinOnlineBookstore
-SYSC4806 Final Project that uses Spring Framework and H2 Database that persists data by storing it in a file.
+SYSC4806 Final Project that uses Spring Framework and H2 Persistent Database 
 
 # Project Description 
 Amazin Bookstore is an online web application that serves as a comprehensive platform for bookstore owners and users. It provides bookstore owners with robust tools for managing their inventory, while also providing users with a seamless experience to browse and purchase books. Additionally, the application offers advanced features such as book recommendations and flexible filtering options

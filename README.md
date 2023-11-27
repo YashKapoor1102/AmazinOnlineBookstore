@@ -48,24 +48,34 @@ Users are currently able to log in/register and browse/search/filter through boo
 
 ## Milestone 2 : Alpha Release
 
-In the upcoming implementation, users will have the capability to add books to their shopping cart, remove books from their shopping cart, purchase them, and view recommendations. Additionally, a database migration tool will be implemented to enhance the inventory management system.
+In this implementation, users have the capability to add books to their shopping cart, remove books from their shopping cart, purchase them, view recommendations, and filter books by price. Additionally, flyway, a database migration tool, was implemented to enhance the inventory management system.
 
-### Upcoming Implementations:
-* Database Migration Tool
-* Inventory
-* Inventory Controller
+
+### Completed Components:
 * Shopping Cart
 * Shopping Cart Controller
 * Checkout functionality 
+* Shopping Cart Unit Tests
+* User Unit Tests editing
+* Book Unit Test Editing
+  
+??? STATUS???
+* Inventory
+* Inventory Controller
 * Recommendations Entity
 * Recommendations Controller
 
 ## Milestone 3 : Final demo
+For the final version of the project, all minor details like error handling and webpage appearance will be improved.
 
+### Upcoming Implementations:
+-Upgrade Error Handling for shoppingCart Functionality
+-Upgrade User Registration
+-Improve Checkout Functionality 
+-Add Book images if possible
 
 # UML Diagram of Project 
 ![image](https://github.com/TheDana1/AmazinOnlineBookstore/assets/89320833/7754e635-0b51-4f18-9ce6-c71367ade790)
-
 
 
 # Database Schema of Project

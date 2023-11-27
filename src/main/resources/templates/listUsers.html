@@ -11,6 +11,12 @@
     <p>ID: <span th:text="${user.id}"></span></p>
     <p>Username: <span th:text="${user.username}"></span></p>
     <p>Role: <span th:text="${user.role}"></span></p>
+      <p>Purchased Books:</p>
+      <ul>
+          <li th:each="book : ${user.purchasedBooks}">
+              <span th:text="${book.title}"></span> by <span th:text="${book.author}"></span>
+          </li>
+      </ul>
     <hr>
   </div>
 </body>

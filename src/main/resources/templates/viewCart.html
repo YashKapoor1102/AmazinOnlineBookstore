@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <style>
+        .column-space {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:if="${bookNotFound}" class="error" th:text="${bookNotFound}"></div>
+
+<!-- Conditional block to render only if bookNotFound is not true -->
+<th:block th:unless="${bookNotFound}">
+    <h1>Your Shopping Cart</h1>
+
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Book ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Action</th> <!-- Added column for the "Remove" button -->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${cart.books}">
+                <td class="column-space" th:text="${book.id}">Book ID</td>
+                <td class="column-space" th:text="${book.title}">Book Title</td>
+                <td class="column-space" th:text="${book.author}">Author Name</td>
+                <td class="column-space">
+                    <form th:action="@{/cart/remove}" method="post">
+                        <input type="hidden" name="bookId" th:value="${book.id}">
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${cart == null || cart.books.isEmpty()}">
+            <p>Your shopping cart is empty.</p>
+        </div>
+
+        <!-- Add the "Checkout" button -->
+        <form th:action="@{/cart/checkout/{userId}(userId=${user.id})}" method="post">
+            <button type="submit">Checkout</button>
+        </form>
+        <br>
+    </div>
+</th:block>
+<br>
+<a th:href="@{/books}" class="continue-shopping">Continue Shopping</a>
+</body>
+</html>

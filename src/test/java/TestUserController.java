@@ -1,6 +1,7 @@
 import amazin.bookstore.AccessingDataJpaApplication;
 import amazin.bookstore.User;
 import amazin.bookstore.repositories.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,11 @@ public class TestUserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @BeforeEach
+    public void resetDatabaseState() {
+        userRepository.deleteByUsername("testUser");
+    }
 
     /**
      * Tests the showRegistrationForm method

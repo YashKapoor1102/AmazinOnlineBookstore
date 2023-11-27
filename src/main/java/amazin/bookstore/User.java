@@ -5,10 +5,7 @@
 
 package amazin.bookstore;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +16,27 @@ import java.util.List;
  * There is only one bookstore owner, but many users can register on the registration page.
  */
 @Entity
+@Table(name = "user")
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ShoppingCart shoppingCart;
+
+    @ManyToMany
+    @JoinTable(
+            name = "purchasedbooks",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PURCHASEDBOOKS_ID")
+    )
+    private List<Book> purchasedbooks;
 
     private String username;
     private String password;
     private boolean isOwner;
-    @ManyToMany
-    private List<Book> purchasedBooks;
 
 
     /**
@@ -42,7 +49,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.isOwner = isOwner;
-        this.purchasedBooks = new ArrayList<>();
     }
 
     /**
@@ -52,7 +58,23 @@ public class User {
         this.username = "";
         this.password = "";
         this.isOwner = false;
-        this.purchasedBooks = new ArrayList<>();
+    }
+
+
+
+    public List<Book> getPurchasedBooks() {
+        return purchasedbooks;
+    }
+
+    public void setPurchasedBooks(List<Book> purchasedBooks) {
+        this.purchasedbooks = purchasedBooks;
+    }
+
+    public void addPurchasedBook(Book book) {
+        if (purchasedbooks == null) {
+            purchasedbooks = new ArrayList<>();
+        }
+        purchasedbooks.add(book);
     }
 
     /**
@@ -127,4 +149,33 @@ public class User {
         this.password = password;
     }
 
+    /**
+     * Get the shopping cart of the user
+     * @return  a ShoppingCart object, the shopping cart of the user
+     */
+    public ShoppingCart getShoppingCart() {
+        return this.shoppingCart;
+    }
+
+    /**
+     * Set the shopping cart of the user
+     * @param shoppingCart  a ShoppingCart object, the shopping cart of the user
+     */
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+    /**
+     * Converts the user details into string format
+     * @return  a String representation of the user details, including
+     *          User ID, username, and password
+     */
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

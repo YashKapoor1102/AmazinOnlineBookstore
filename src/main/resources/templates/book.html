@@ -7,6 +7,43 @@
         .search-input {
             width: 350px;
         }
+
+        table {
+            width: 60%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        th, td {
+            padding: 2px;
+            text-align: left;
+        }
+
+        button {
+            padding: 3px;
+            margin-top: 2px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -15,8 +52,23 @@
 
 <form action="/search" method="post">
     <input type="text" name="query" class="search-input" placeholder="Search by ISBN, Description, Title, Author, or Publisher">
-    <input type="submit" value="Search/Filter">
+    <input type="submit" value="Search">
 </form>
+
+<!-- Filter by price Button -->
+<div class="dropdown">
+    <button type="button">Filter By Price</button>
+    <div class="dropdown-content">
+        <div class="dropdown">
+            <div class="dropdown-content">
+                <a th:href="@{/books/filterByPrice?minPrice=0&maxPrice=10}">0 - 10</a>
+                <a th:href="@{/books/filterByPrice?minPrice=10&maxPrice=20}">10 - 30</a>
+                <a th:href="@{/books/filterByPrice?minPrice=20&maxPrice=30}">30 - 80</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Sort by Title Button -->
 <form action="/books/sortByTitle" method="get" style="display:inline;">
     <input type="submit" value="Sort by Title">
@@ -26,24 +78,43 @@
 <form action="/books/sortByAuthor" method="get" style="display:inline;">
     <input type="submit" value="Sort by Author">
 </form>
+<!-- Sort by Price Button -->
+<form action="/books/sortByPrice" method="get" style="display:inline;">
+    <input type="submit" value="Sort by Price">
+</form>
+
+<form action="/cart/view" method="get" style="display:inline;">
+    <input type="submit" value="View Cart">
+</form>
 
 <table>
     <thead>
     <tr>
+        <th>Book ID</th>
         <th>ISBN</th>
         <th>Title</th>
         <th>Author</th>
         <th>Description</th>
         <th>Publisher</th>
+        <th>Price</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="book : ${books}">
+        <td th:text="${book.id}"></td>
         <td th:text="${book.isbn}"></td>
         <td th:text="${book.title}"></td>
         <td th:text="${book.author}"></td>
         <td th:text="${book.description}"></td>
         <td th:text="${book.publisher}"></td>
+        <td th:text="${book.price}"></td>
+        <td>
+            <form th:action="@{/cart/add}" method="post">
+                <input type="hidden" name="bookId" th:value="${book.id}">
+                <button type="submit">Add to Cart</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

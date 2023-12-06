@@ -86,7 +86,9 @@
 <form action="/cart/view" method="get" style="display:inline;">
     <input type="submit" value="View Cart">
 </form>
-
+<a th:href="@{/user/purchased-books}">
+    <button>Show Purchased Books</button>
+</a>
 <table>
     <thead>
     <tr>
@@ -112,6 +114,8 @@
         <td>
             <form th:action="@{/cart/add}" method="post">
                 <input type="hidden" name="bookId" th:value="${book.id}">
+                <input type="hidden" name="bookId" th:value="${book.id}">
+                <input type="number" name="quantity" value="1" min="1">
                 <button type="submit">Add to Cart</button>
             </form>
         </td>

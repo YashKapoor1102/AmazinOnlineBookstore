@@ -76,7 +76,13 @@ public class TestRecommendationController {
         assertThat(Double.isNaN(RecommendationController.JaccardIndex(set1, set2))).isEqualTo(true);
 
         set1.add(book1); set1.add(book2);
-        set2.add(book1); set2.add(book3);
+        set2.add(book3);
+        assertThat(RecommendationController.JaccardIndex(set1, set2)).isEqualTo(0);
+
+        set2.add(book1);
         assertThat(RecommendationController.JaccardIndex(set1, set2)).isEqualTo((double) 1 /3);
+
+        set1 = new HashSet<>();
+        assertThat(RecommendationController.JaccardIndex(set1, set2)).isEqualTo(0);
     }
 }

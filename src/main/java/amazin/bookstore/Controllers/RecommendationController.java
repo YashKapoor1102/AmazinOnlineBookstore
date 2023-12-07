@@ -73,13 +73,18 @@ public class RecommendationController {
         cleanOldRecommendations(user);
 
         for (Book b : catalogue) {
-            for (Book b1 : history) {
-                if (!history.contains(b)) {
+            if (!history.contains(b)) {
+                for (Book b1 : history) {
+                    boolean recommended = false;
                     if (b1.getAuthor().equals(b.getAuthor())) {
                         recommend(user, b, Weighting.SAME_AUTHOR.value());
-                        break;
-                    } else if (b1.getDescription().equals(b.getDescription())) {
+                        recommended = true;
+                    }
+                    if (b1.getDescription().equals(b.getDescription())) {
                         recommend(user, b, Weighting.SAME_GENRE.value());
+                        recommended = true;
+                    }
+                    if (recommended) {
                         break;
                     }
                 }

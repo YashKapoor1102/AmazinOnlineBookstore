@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/recommendations")
@@ -35,6 +37,15 @@ public class RecommendationController {
         this.recommendationRepository = recommendationRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
+    }
+
+    public static double JaccardIndex(Set<Book> userBooks, Set<Book> otherUserBooks) {
+        HashSet<Book> union = new HashSet<>(userBooks);
+        union.addAll(otherUserBooks);
+        HashSet<Book> intersection = new HashSet<>(userBooks);
+        intersection.retainAll(otherUserBooks);
+
+        return (double) intersection.size() / union.size();
     }
 
     @GetMapping("")

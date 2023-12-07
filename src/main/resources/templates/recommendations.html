@@ -9,7 +9,10 @@
 <h1>My Recommendations</h1>
     <a th:href="@{/recommendations/refresh}">Refresh</a>
     <div th:each="book : ${recommendations}">
-        <p th:text="${book.author} + ', ' + ${book.title}"></p>
+        <form th:action="@{/search}" method="post">
+            <input type="hidden" name="query" th:value="${book.isbn}">
+            <button type="submit" th:text="${book.author} + ', ' + ${book.title}"></button>
+        </form>
     </div>
 
 </body>

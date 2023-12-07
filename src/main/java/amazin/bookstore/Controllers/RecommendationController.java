@@ -70,23 +70,46 @@ public class RecommendationController {
 
         List<Book> history = user.getPurchasedBooks();
         List<Book> catalogue = (List<Book>) bookRepository.findAll(Sort.unsorted());
+        cleanOldRecommendations(user);
 
         for (Book b : catalogue) {
-            if (recommendationRepository.findByUserAndBook(user, b) == null) {
-                for (Book b1 : history) {
-                    if (!history.contains(b)) {
-                        if (b1.getAuthor().equals(b.getAuthor())) {
-                            recommendationRepository.save(new Recommendation(user, b, Weighting.SAME_AUTHOR.value()));
-                            break;
-                        } else if (b1.getDescription().equals(b.getDescription())) {
-                            recommendationRepository.save(new Recommendation(user, b, Weighting.SAME_GENRE.value()));
-                            break;
-                        }
+            for (Book b1 : history) {
+                if (!history.contains(b)) {
+                    if (b1.getAuthor().equals(b.getAuthor())) {
+                        recommend(user, b, Weighting.SAME_AUTHOR.value());
+                        break;
+                    } else if (b1.getDescription().equals(b.getDescription())) {
+                        recommend(user, b, Weighting.SAME_GENRE.value());
+                        break;
                     }
                 }
             }
         }
 
         return "redirect:/recommendations";
+    }
+
+    public void recommend(User user, Book book, int weight) {
+        Recommendation recommendation = recommendationRepository.findByUserAndBook(user, book);
+        int totalWeight = weight;
+        if (recommendation != null) {
+            totalWeight += recommendation.getWeight();
+            recommendation.setWeight(totalWeight);
+        } else {
+            recommendation = new Recommendation(user, book, totalWeight);
+        }
+        recommendationRepository.save(recommendation);
+    }
+
+    public void cleanOldRecommendations(User user) {
+        List<Book> purchasedBooks = user.getPurchasedBooks();
+        for (Recommendation r : recommendationRepository.findByUser(user)) {
+            if (purchasedBooks.contains(r.getBook())) {
+                recommendationRepository.delete(r);
+            } else {
+                r.setWeight(0);
+                recommendationRepository.save(r);
+            }
+        }
     }
 }

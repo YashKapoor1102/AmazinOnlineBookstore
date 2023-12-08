@@ -73,7 +73,7 @@ For the final version of the project, all minor details like error handling and 
 * Add Book images if possible
 
 # UML Diagram of Project 
-![UML Class Diagram for Amazin Bookstore drawio (1)](https://github.com/TheDana1/AmazinOnlineBookstore/assets/78821595/787b430c-c3dd-4a24-a688-276719e28cfb)
+![UML drawio (1)](https://github.com/TheDana1/AmazinOnlineBookstore/assets/78821595/6f6d85d9-5729-4c46-9209-7b5306fe991b)
 
 
 # Database Schema of Project

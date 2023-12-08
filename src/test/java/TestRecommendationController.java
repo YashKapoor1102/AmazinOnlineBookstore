@@ -35,7 +35,7 @@ public class TestRecommendationController {
     public void redirectToLoginPage() {
         String url = "http://localhost:" + port + "/recommendations";
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        assertThat(response.getBody()).contains("Login Form");
+        assertThat(response.getBody()).contains("Welcome to Amazin Bookstore!");
     }
 
     @Test

@@ -102,7 +102,7 @@ public class TestUserController {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        assertThat(responseEntity.getBody()).contains("Login Form");
+        assertThat(responseEntity.getBody()).contains("Welcome to Amazin Bookstore!");
         assertThat(responseEntity.getBody()).contains("username");
         assertThat(responseEntity.getBody()).contains("password");
     }

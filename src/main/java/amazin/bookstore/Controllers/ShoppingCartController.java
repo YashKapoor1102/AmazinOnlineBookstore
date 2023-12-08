@@ -11,6 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+import java.util.Map;
 
 /**
  * Controller Class for managing the shopping cart for each user.
@@ -24,6 +29,9 @@ public class ShoppingCartController {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private InventoryController inventoryController;
 
     @Autowired
     private UserRepository userRepository;
@@ -46,24 +54,30 @@ public class ShoppingCartController {
      *              If the user is not logged in, then they are redirected to the Login page.
      */
     @PostMapping("/add")
-    public String addBookToCart(@RequestParam Long bookId, HttpSession session, Model model) {
+    public String addBookToCart(
+            @RequestParam Long bookId,
+            @RequestParam int quantity,
+            HttpSession session,
+            Model model
+    ) {
         Long userId = (Long) session.getAttribute("userId");
         User user = userRepository.findById(userId).orElse(null);
 
         ShoppingCart cart;
-        if(user != null) {
+        if (user != null) {
             cart = user.getShoppingCart();
             user.setShoppingCart(cart);
 
             Book book = bookRepository.findById(bookId).orElse(null);
 
-            if(book == null) {
+            if (book == null) {
                 model.addAttribute("bookNotFound", "The Book ID provided is incorrect. Try again!");
                 return "viewCart";
             }
-            if(cart != null) {
-                cart.addBook(book);
-                userRepository.save(user); // Saving user will cascade and save the cart as well
+
+            if (cart != null) {
+                cart.addBook(book, quantity);
+                userRepository.save(user);
             }
 
             return "redirect:/cart/view";
@@ -74,20 +88,43 @@ public class ShoppingCartController {
 
     @PostMapping("/checkout/{userId}")
     public String checkout(@PathVariable Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(); // You might want to handle the case when the user is not found
+        Logger logger = LoggerFactory.getLogger(getClass());
+        User user = userRepository.findById(userId).orElseThrow();
         ShoppingCart shoppingCart = user.getShoppingCart();
 
-        // Move books from the shopping cart to purchased books
-        for (Book book : shoppingCart.getBooks()) {
-            user.addPurchasedBook(book);
+        // Check if each book in the shopping cart is in stock
+        for (Map.Entry<Book, Integer> entry : shoppingCart.getBooks().entrySet()) {
+            Book book = entry.getKey();
+            int requestedQuantity = entry.getValue();
+
+            int stock = inventoryController.getBookStockByBookIdInventoryId(book.getId(), 1);
+            logger.info(String.valueOf(requestedQuantity));
+            if (stock < requestedQuantity) {
+                // Book is out of stock
+                return "redirect:/cart/view?outOfStock=true";
+            }
+
+
+            // Decrease the stock of the book in the inventory by the requested quantity
+            inventoryController.decreaseBookStockByBookId(book.getId(), requestedQuantity);
         }
 
-        // Clear the shopping cart
-        shoppingCart.getBooks().clear();
+        // Move books from the shopping cart to purchased books
+        for (Map.Entry<Book, Integer> entry : shoppingCart.getBooks().entrySet()) {
+            Book book = entry.getKey();
+            // Check if the book is not already in the purchasedbooks
+            if (!user.getPurchasedBooks().contains(book)) {
+                user.addPurchasedBook(book);
+            }
+           shoppingCart.removeBook(book);
+        }
         userRepository.save(user);
 
-        return "redirect:/books"; // Redirect to the book listing page or any other page you prefer
+        return "CheckoutComplete";
     }
+
+
+
 
     /**
      * Removes a book from the shopping cart using the
@@ -105,7 +142,7 @@ public class ShoppingCartController {
     public String removeBookFromCart(@RequestParam Long bookId, HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("userId"); // Retrieve user ID from session
         if (userId == null) {
-            return "redirect:/login"; // Redirect to log in if user is not logged in
+            return "redirect:/login"; // Redirect to log in if the user is not logged in
         }
 
         User user = userRepository.findById(userId).orElse(null);
@@ -113,11 +150,11 @@ public class ShoppingCartController {
 
         Book book = bookRepository.findById(bookId).orElse(null);
 
-        if(book == null) {
+        if (book == null) {
             model.addAttribute("bookNotFound", "The Book ID provided is incorrect. Try again!");
             return "viewCart";
         }
-        if (cart != null && cart.getBooks().contains(book)) {
+        if (cart != null && cart.getBooks().containsKey(book)) {
             cart.removeBook(book);
             userRepository.save(user);
         }

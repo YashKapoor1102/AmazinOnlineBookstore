@@ -5,13 +5,14 @@ import amazin.bookstore.User;
 import amazin.bookstore.repositories.BookRepository;
 import amazin.bookstore.repositories.UserRepository;
 import org.assertj.core.api.Assertions;
-import org.flywaydb.core.internal.jdbc.JdbcTemplate;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,7 +60,7 @@ public class TestShoppingCartController {
 
         testRemoveBook = new Book("987654321", "book2", "author", "publisher", "description", 11);
         bookRepository.save(testRemoveBook);
-        cart.addBook(testRemoveBook);
+        cart.addBook(testRemoveBook, 1);
 
         testUser.setShoppingCart(cart);
         cart.setUser(testUser);
@@ -106,7 +107,12 @@ public class TestShoppingCartController {
         headers.set("Content-Type", "application/x-www-form-urlencoded");
         headers.add("Cookie", sessionCookie);
 
-        HttpEntity<String> request = new HttpEntity<>("bookId=" + testAddBook.getId(), headers);
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("bookId", String.valueOf(testAddBook.getId()));
+        map.add("quantity", "1");
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
         ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:" + port + "/cart/add", request, String.class);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.FOUND);
@@ -115,7 +121,7 @@ public class TestShoppingCartController {
         // Re-fetch testUser from the repository to get updated cart
         testUser = userRepository.findById(testUser.getId()).orElse(null);
         if(testUser != null) {
-            Assertions.assertThat(testUser.getShoppingCart().getBooks().contains(testAddBook)).isTrue();
+            Assertions.assertThat(testUser.getShoppingCart().getBooks().containsKey(testAddBook)).isTrue();
             testUser.getShoppingCart().removeBook(testAddBook);
             userRepository.save(testUser);
         }
@@ -128,7 +134,7 @@ public class TestShoppingCartController {
      */
     @Test
     public void testRemoveBookFromCart() {
-        Assertions.assertThat(testUser.getShoppingCart().getBooks().contains(testRemoveBook)).isTrue();
+        Assertions.assertThat(testUser.getShoppingCart().getBooks().containsKey(testRemoveBook)).isTrue();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/x-www-form-urlencoded");
@@ -143,7 +149,7 @@ public class TestShoppingCartController {
         // Re-fetch testUser from the repository to get updated cart
         testUser = userRepository.findById(testUser.getId()).orElse(null);
         if(testUser != null) {
-            Assertions.assertThat(testUser.getShoppingCart().getBooks().contains(testRemoveBook)).isFalse();
+            Assertions.assertThat(testUser.getShoppingCart().getBooks().containsKey(testRemoveBook)).isFalse();
         }
 
     }

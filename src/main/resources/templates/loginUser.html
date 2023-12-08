@@ -4,7 +4,12 @@
     <title>Login</title>
 </head>
 <body>
-<h1>Login Form</h1>
+
+<div>
+    <h1>Welcome to Amazin Bookstore!</h1>
+    <p style="font-size: 18px; font-weight: bold;">Please login below:</p>
+</div>
+
 <!-- Display error message if username or password is invalid -->
 <div th:if="${loginError}" class="error" th:text="${loginError}"></div>
 <br>
@@ -26,5 +31,6 @@
 <p>
     Don't have an account? <a th:href="@{/user/register}">Register here</a>.
 </p>
+
 </body>
 </html>

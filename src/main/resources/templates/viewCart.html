@@ -24,17 +24,21 @@
                 <th>Book ID</th>
                 <th>Title</th>
                 <th>Author</th>
-                <th>Action</th> <!-- Added column for the "Remove" button -->
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="book : ${cart.books}">
-                <td class="column-space" th:text="${book.id}">Book ID</td>
-                <td class="column-space" th:text="${book.title}">Book Title</td>
-                <td class="column-space" th:text="${book.author}">Author Name</td>
+                <td class="column-space" th:text="${book.key.id}">Book ID</td>
+                <td class="column-space" th:text="${book.key.title}">Book Title</td>
+                <td class="column-space" th:text="${book.key.author}">Author Name</td>
+                <td class="column-space" th:text="${book.key.price * book.value}">Book Price</td>
+                <td class="column-space" th:text="${book.value}">Quantity</td>
                 <td class="column-space">
                     <form th:action="@{/cart/remove}" method="post">
-                        <input type="hidden" name="bookId" th:value="${book.id}">
+                        <input type="hidden" name="bookId" th:value="${book.key.id}">
                         <button type="submit">Remove</button>
                     </form>
                 </td>

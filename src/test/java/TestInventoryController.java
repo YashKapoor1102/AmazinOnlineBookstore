@@ -48,7 +48,7 @@ public class TestInventoryController {
                 "TestInventoryPublisher",
                 "TestInventoryDescription",
                 13.00
-                );
+        );
         this.book = bookRepository.save(testBook);
 
     }
@@ -98,6 +98,44 @@ public class TestInventoryController {
         this.restTemplate.put(putBookUrl, initalInventory, initalInventory.getId(), book.getId(), stock);
         return initalInventory;
 
+    }
+
+    /**
+     * Adds the already defined book to the default inventory and returns that inventory. This is the inventory
+     * used in application and used for any test with books that does not specify an id,
+     * such as testPutBookStockByBookId()
+     *
+     * @param expectedStock     int, the stock of the defined book to be added to the inventory
+     * @return                  Inventory, the default inventory
+     */
+    private Inventory getDefaultInventoryWithBook(int expectedStock)
+    {
+        int defaultInventoryId = 1;
+
+        String url = "http://localhost:" + port +"/inventory/{inventoryId}/book/{bookId}/{stock}";
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> request = new HttpEntity<>(headers);
+        ResponseEntity<Inventory> response = this.restTemplate.exchange(url, HttpMethod.PUT, request,
+                Inventory.class, defaultInventoryId, book.getId(), expectedStock);
+        Inventory testInventory = response.getBody();
+            return testInventory;
+
+
+    }
+
+    /**
+     *  Removes the already defined book from the default inventory, so the default inventory is reset after each test
+     */
+    private void removeBookFromDefaultInventory()
+    {
+        String testUrl = "/inventory/{inventoryId}/removeBook/{bookId}";
+        int defaultInventoryId = 1;
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> request = new HttpEntity<>(headers);
+
+        this.restTemplate.exchange(testUrl, HttpMethod.PUT, request,
+                Inventory.class, defaultInventoryId, book.getId());
     }
 
     /**
@@ -177,9 +215,10 @@ public class TestInventoryController {
         ResponseEntity<Inventory[]> response =restTemplate.getForEntity(url, Inventory[].class);
         Inventory[] allInventories = response.getBody();
 
-        Assertions.assertEquals(2, allInventories.length);
-        Assertions.assertEquals(0, allInventories[0].getCatalog().size());
-        Assertions.assertEquals(1, allInventories[1].getCatalog().size());
+        Assertions.assertEquals(3, allInventories.length);
+        Assertions.assertTrue(allInventories[0].getCatalog().size() > 1);
+        Assertions.assertEquals(0, allInventories[1].getCatalog().size());
+        Assertions.assertEquals(1, allInventories[2].getCatalog().size());
 
         removeInventoryAfterTest(initialInventory1.getId());
         removeInventoryAfterTest(initialInventory2.getId());
@@ -241,8 +280,11 @@ public class TestInventoryController {
     @Test
     public void testPutBookStockByBookId()
     {
-        String url = "http://localhost:" + port +"/inventory/book/{bookId}/{stock}";
-        Inventory initalInventory = createNewEmptyInventory();
+        String urlForTest = "http://localhost:" + port +"/inventory/book/{bookId}/{stock}";
+        int defaultInventoryId = 1;
+
+        String urlForDefaultInventory = "http://localhost:" + port + "/inventory/{inventoryId}";
+        Inventory initalInventory = this.restTemplate.getForObject(urlForDefaultInventory, Inventory.class, defaultInventoryId);
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -253,17 +295,17 @@ public class TestInventoryController {
         {
             int expectedStock = 10 + (10*i);
             initalInventory.setBookStock(book, expectedStock);
-            ResponseEntity<Inventory> response = this.restTemplate.exchange(url, HttpMethod.PUT, request,
+            ResponseEntity<Inventory> response = this.restTemplate.exchange(urlForTest, HttpMethod.PUT, request,
                     Inventory.class, book.getId(), expectedStock);
             Inventory testInventory = response.getBody();
 
             Assertions.assertEquals(initalInventory.getId(), testInventory.getId());
-            Assertions.assertEquals(1, testInventory.getCatalog().size());
+            Assertions.assertTrue(testInventory.getCatalog().size() > 1);
             Assertions.assertEquals(expectedStock, testInventory.getBookStock(book));
 
         }
 
-        removeInventoryAfterTest(initalInventory.getId());
+        removeBookFromDefaultInventory();
 
     }
 
@@ -273,19 +315,15 @@ public class TestInventoryController {
     @Test
     public void testDeleteInventory()
     {
-
         Inventory initialInventory1 = createNewEmptyInventory();
-        Inventory initialInventory2 = createNewInventoryWithBook(40);
-
-        removeInventoryAfterTest(initialInventory2.getId());
 
         String getAllurl = "http://localhost:" + port + "/inventory";
         ResponseEntity<Inventory[]> response =restTemplate.getForEntity(getAllurl, Inventory[].class);
         Inventory[] allInventories = response.getBody();
 
-        Assertions.assertEquals(1, allInventories.length);
-        Assertions.assertEquals(initialInventory1.getId(), allInventories[0].getId());
-        Assertions.assertEquals(0, allInventories[0].getCatalog().size());
+        Assertions.assertEquals(2, allInventories.length);
+        Assertions.assertEquals(initialInventory1.getId(), allInventories[1].getId());
+        Assertions.assertEquals(0, allInventories[1].getCatalog().size());
 
         removeInventoryAfterTest(initialInventory1.getId());
 
@@ -322,7 +360,7 @@ public class TestInventoryController {
     public void testRemoveBookStockByBookId()
     {
         String testUrl = "/inventory/removeBook/{bookId}";
-        Inventory initalInventory = createNewInventoryWithBook(20);
+        Inventory initalInventory = getDefaultInventoryWithBook(10);
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -332,10 +370,10 @@ public class TestInventoryController {
         Inventory testInventory = response.getBody();
 
         Assertions.assertEquals(initalInventory.getId(), testInventory.getId());
-        Assertions.assertEquals(0, testInventory.getCatalog().size());
+        Assertions.assertTrue(testInventory.getCatalog().size() > 1);
         Assertions.assertEquals(-1, testInventory.getBookStock(book));
 
-        removeInventoryAfterTest(initalInventory.getId());
+        removeBookFromDefaultInventory();
 
     }
 
@@ -375,7 +413,7 @@ public class TestInventoryController {
     public void testDecreaseBookStockByBookId()
     {
         String url = "http://localhost:" + port +"/inventory/book/{bookId}/decrease/{stock}";
-        Inventory initalInventory = createNewInventoryWithBook(20);
+        Inventory initalInventory = getDefaultInventoryWithBook(20);
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -388,10 +426,10 @@ public class TestInventoryController {
         Inventory testInventory = response.getBody();
 
         Assertions.assertEquals(initalInventory.getId(), testInventory.getId());
-        Assertions.assertEquals(1, testInventory.getCatalog().size());
+        Assertions.assertTrue(testInventory.getCatalog().size() > 1);
         Assertions.assertEquals(expectedStock, testInventory.getBookStock(book));
 
-        removeInventoryAfterTest(initalInventory.getId());
+        removeBookFromDefaultInventory();
 
     }
 

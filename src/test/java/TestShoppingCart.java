@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -53,12 +54,20 @@ public class TestShoppingCart {
     @Test
     public void testBooksAccessors() {
         List<Book> books = new ArrayList<>();
+
         books.add(book1);
         books.add(book2);
-        shoppingCart.setBooks(books);
+
+        HashMap<Book, Integer> booksMap = new HashMap<>();
+
+        for (int i = 0; i < books.size(); i++) {
+            booksMap.put(books.get(i), i);
+        }
+
+        shoppingCart.setBooks(booksMap);
         Assertions.assertEquals(2, shoppingCart.getBooks().size());
-        Assertions.assertTrue(shoppingCart.getBooks().contains(book1));
-        Assertions.assertTrue(shoppingCart.getBooks().contains(book2));
+        Assertions.assertTrue(shoppingCart.getBooks().containsKey(book1));
+        Assertions.assertTrue(shoppingCart.getBooks().containsKey(book2));
     }
 
     /**
@@ -67,9 +76,9 @@ public class TestShoppingCart {
      */
     @Test
     public void testAddBook() {
-        shoppingCart.addBook(book1);
+        shoppingCart.addBook(book1, 1);
         Assertions.assertEquals(1, shoppingCart.getBooks().size());
-        Assertions.assertTrue(shoppingCart.getBooks().contains(book1));
+        Assertions.assertTrue(shoppingCart.getBooks().containsKey(book1));
     }
 
     /**
@@ -78,11 +87,11 @@ public class TestShoppingCart {
      */
     @Test
     public void testRemoveBook() {
-        shoppingCart.addBook(book1);
-        shoppingCart.addBook(book2);
+        shoppingCart.addBook(book1, 1);
+        shoppingCart.addBook(book2, 1);
         shoppingCart.removeBook(book1);
         Assertions.assertEquals(1, shoppingCart.getBooks().size());
-        Assertions.assertFalse(shoppingCart.getBooks().contains(book1));
-        Assertions.assertTrue(shoppingCart.getBooks().contains(book2));
+        Assertions.assertFalse(shoppingCart.getBooks().containsKey(book1));
+        Assertions.assertTrue(shoppingCart.getBooks().containsKey(book2));
     }
 }

@@ -47,7 +47,7 @@ public class InventoryController {
      * @return              int, the current stock for the specified book
      */
     @GetMapping("/inventory/{inventoryId}/book/{bookId}")
-    int getBookStockByBookIdInventoryId(@PathVariable int bookId, @PathVariable int inventoryId) {
+    int getBookStockByBookIdInventoryId(@PathVariable long bookId, @PathVariable int inventoryId) {
 
         Book book = bookRepository.findById(bookId);
         int stock = -1;
@@ -243,7 +243,7 @@ public class InventoryController {
      * @return              Inventory, the current inventory after decreasing the book stock
      */
     @PutMapping("/inventory/book/{bookId}/decrease/{stock}")
-    public Inventory decreaseBookStockByBookId (@PathVariable int bookId, @PathVariable int stock)
+    public Inventory decreaseBookStockByBookId (@PathVariable long bookId, @PathVariable int stock)
     {
 
         Book book = bookRepository.findById(bookId);

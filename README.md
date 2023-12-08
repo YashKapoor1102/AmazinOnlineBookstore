@@ -77,7 +77,8 @@ For the final version of the project, all minor details like error handling and 
 
 
 # Database Schema of Project
-![DatabaseSchemaMilestone2](https://github.com/TheDana1/AmazinOnlineBookstore/assets/44479056/04e74735-73e5-497f-b1ca-1737827a194c)
+![Milestone3Schema](https://github.com/TheDana1/AmazinOnlineBookstore/assets/44479056/0a93038b-8902-42fb-a0e1-7a3a7a847ac1)
+
 
 
 

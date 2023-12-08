@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>List of Purchased Books</title>
@@ -7,6 +7,9 @@
 <body>
 
 <h2>List of Purchased Books</h2>
+<form action="/recommendations/refresh" method="get">
+    <button type="submit">View My Recommendations</button>
+</form>
 <table>
     <thead>
     <tr>

@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/recommendations")
@@ -35,6 +37,15 @@ public class RecommendationController {
         this.recommendationRepository = recommendationRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
+    }
+
+    public static double JaccardIndex(Set<Book> userBooks, Set<Book> otherUserBooks) {
+        HashSet<Book> union = new HashSet<>(userBooks);
+        union.addAll(otherUserBooks);
+        HashSet<Book> intersection = new HashSet<>(userBooks);
+        intersection.retainAll(otherUserBooks);
+
+        return (double) intersection.size() / union.size();
     }
 
     @GetMapping("")
@@ -59,23 +70,77 @@ public class RecommendationController {
 
         List<Book> history = user.getPurchasedBooks();
         List<Book> catalogue = (List<Book>) bookRepository.findAll(Sort.unsorted());
+        cleanOldRecommendations(user);
 
+        // Search for books with same author or genre
         for (Book b : catalogue) {
-            if (recommendationRepository.findByUserAndBook(user, b) == null) {
+            if (!history.contains(b)) {
                 for (Book b1 : history) {
-                    if (!history.contains(b)) {
-                        if (b1.getAuthor().equals(b.getAuthor())) {
-                            recommendationRepository.save(new Recommendation(user, b, Weighting.SAME_AUTHOR.value()));
-                            break;
-                        } else if (b1.getDescription().equals(b.getDescription())) {
-                            recommendationRepository.save(new Recommendation(user, b, Weighting.SAME_GENRE.value()));
-                            break;
+                    boolean recommended = false;
+                    if (b1.getAuthor().equals(b.getAuthor())) {
+                        recommend(user, b, Weighting.SAME_AUTHOR.value());
+                        recommended = true;
+                    }
+                    List<String> bookGenres = List.of(b.getDescription().split(","));
+                    List<String> userBookGenres = List.of(b1.getDescription().split(","));
+                    genreComparison:
+                    for (String userBookGenre : userBookGenres) {
+                        for (String bookGenre : bookGenres) {
+                            if (userBookGenre.strip().equalsIgnoreCase(bookGenre.strip())) {
+                                recommend(user, b, Weighting.SAME_GENRE.value());
+                                recommended = true;
+                                break genreComparison;
+                            }
                         }
+                    }
+
+                    if (recommended) {
+                        break;
                     }
                 }
             }
         }
 
+        // Compare purchases with other users
+        List<User> userbase = (List<User>) userRepository.findAll();
+        userbase.remove(user);
+        for (User otherUser : userbase) {
+            HashSet<Book> otherUserBooks = new HashSet<>(otherUser.getPurchasedBooks());
+            HashSet<Book> userBooks = new HashSet<>(history);
+            double similarity = JaccardIndex(userBooks, otherUserBooks);
+            if (similarity > 0) {
+                otherUserBooks.removeAll(userBooks);
+                int weight = (int) Math.round(similarity * Weighting.OTHERS_PURCHASED.value());
+                for (Book book : otherUserBooks) {
+                    recommend(user, book, weight);
+                }
+            }
+        }
+
         return "redirect:/recommendations";
+    }
+
+    public void recommend(User user, Book book, int weight) {
+        Recommendation recommendation = recommendationRepository.findByUserAndBook(user, book);
+        int totalWeight = weight;
+        if (recommendation != null) {
+            totalWeight += recommendation.getWeight();
+            recommendation.setWeight(totalWeight);
+        } else {
+            recommendation = new Recommendation(user, book, totalWeight);
+        }
+        recommendationRepository.save(recommendation);
+    }
+
+    public void cleanOldRecommendations(User user) {
+        List<Book> purchasedBooks = user.getPurchasedBooks();
+        for (Recommendation r : recommendationRepository.findByUser(user)) {
+            if (purchasedBooks.contains(r.getBook())) {
+                recommendationRepository.delete(r);
+            } else {
+                r.setWeight(0);
+                recommendationRepository.save(r);
+            }
+        }
     }
 }

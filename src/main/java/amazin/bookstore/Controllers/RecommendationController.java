@@ -72,6 +72,7 @@ public class RecommendationController {
         List<Book> catalogue = (List<Book>) bookRepository.findAll(Sort.unsorted());
         cleanOldRecommendations(user);
 
+        // Search for books with same author or genre
         for (Book b : catalogue) {
             if (!history.contains(b)) {
                 for (Book b1 : history) {
@@ -87,6 +88,22 @@ public class RecommendationController {
                     if (recommended) {
                         break;
                     }
+                }
+            }
+        }
+
+        // Compare purchases with other users
+        List<User> userbase = (List<User>) userRepository.findAll();
+        userbase.remove(user);
+        for (User otherUser : userbase) {
+            HashSet<Book> otherUserBooks = new HashSet<>(otherUser.getPurchasedBooks());
+            HashSet<Book> userBooks = new HashSet<>(history);
+            double similarity = JaccardIndex(userBooks, otherUserBooks);
+            if (similarity > 0) {
+                otherUserBooks.removeAll(userBooks);
+                int weight = (int) Math.round(similarity * Weighting.OTHERS_PURCHASED.value());
+                for (Book book : otherUserBooks) {
+                    recommend(user, book, weight);
                 }
             }
         }

@@ -13,9 +13,9 @@ import jakarta.persistence.*;
 public class Recommendation {
 
     public enum Weighting {
-        SAME_AUTHOR (7),
-        OTHERS_PURCHASED (3),
-        SAME_GENRE (5);
+        SAME_AUTHOR (50),
+        OTHERS_PURCHASED (100),
+        SAME_GENRE (70);
 
         private final int value;
 

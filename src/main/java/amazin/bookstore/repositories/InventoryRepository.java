@@ -23,8 +23,5 @@ public interface InventoryRepository extends CrudRepository<Inventory, Integer> 
      */
     Inventory findById(int id);
 
-    @Query("SELECT i FROM Inventory i JOIN i.catalog c WHERE KEY(c).id = :bookId")
-    List<Inventory> findInventoriesWithBook(@Param("bookId") Long bookId);
-
 
 }

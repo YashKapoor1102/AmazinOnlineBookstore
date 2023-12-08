@@ -65,7 +65,7 @@ In this implementation, users have the capability to add books to their shopping
 ## Milestone 3 : Final demo
 For the final version of the project, all minor details like error handling and webpage appearance were improved.
 Users are now able to select the quantity of books that they would like to purchase and, before checkout, view the total cost in their cart.
-Purchasing a book multiple times, and viewing purchased books as well as recommendations via a button is also permitted. 
+Purchasing a book multiple times and viewing previously purchased books, as well as recommendations via a button is also permitted. 
 
 ### Completed Components:
 * Upgraded Error Handling for shoppingCart Functionality

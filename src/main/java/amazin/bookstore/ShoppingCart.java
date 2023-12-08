@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Shopping Cart Class that allows each user to
@@ -22,13 +24,11 @@ public class ShoppingCart {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Cart_Book",
-            joinColumns = @JoinColumn(name = "cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
-    private List<Book> books;
+    @ElementCollection
+    @CollectionTable(name = "Cart_Book", joinColumns = @JoinColumn(name = "cart_id"))
+    @MapKeyJoinColumn(name = "book_id")
+    @Column(name = "quantity")
+    private Map<Book, Integer> books;
 
     /**
      * Constructor for ShoppingCart.
@@ -36,7 +36,7 @@ public class ShoppingCart {
      * in the Shopping Cart.
      */
     public ShoppingCart() {
-        books = new ArrayList<>();
+        books = new HashMap<>();
     }
 
     /**
@@ -75,24 +75,28 @@ public class ShoppingCart {
      * Get a list of books that are in the shopping cart
      * @return  a List object, a list of books in the shopping cart
      */
-    public List<Book> getBooks() {
-        return this.books;
+// Modify the getBooks method in ShoppingCart class
+    public Map<Book, Integer> getBooks() {
+        return new HashMap<>(books);
     }
-
     /**
      * Set the list of books that are in the shopping cart
      * @param books     a List object, a list of books in the shopping cart
      */
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setBooks(Map<Book, Integer> books) {
+        this.books = new HashMap<>(books);
     }
 
     /**
      * Add a book to the shopping cart
      * @param book  a Book object, the book to be added to the shopping cart
      */
-    public void addBook(Book book) {
-        books.add(book);
+    public void addBook(Book book, int quantity) {
+        if (books.containsKey(book)) {
+            books.put(book, books.get(book) + quantity);
+        } else {
+            books.put(book, quantity);
+        }
     }
 
     /**

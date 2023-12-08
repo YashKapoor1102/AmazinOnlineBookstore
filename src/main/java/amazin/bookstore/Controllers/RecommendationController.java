@@ -81,10 +81,19 @@ public class RecommendationController {
                         recommend(user, b, Weighting.SAME_AUTHOR.value());
                         recommended = true;
                     }
-                    if (b1.getDescription().equals(b.getDescription())) {
-                        recommend(user, b, Weighting.SAME_GENRE.value());
-                        recommended = true;
+                    List<String> bookGenres = List.of(b.getDescription().split(","));
+                    List<String> userBookGenres = List.of(b1.getDescription().split(","));
+                    genreComparison:
+                    for (String userBookGenre : userBookGenres) {
+                        for (String bookGenre : bookGenres) {
+                            if (userBookGenre.strip().equalsIgnoreCase(bookGenre.strip())) {
+                                recommend(user, b, Weighting.SAME_GENRE.value());
+                                recommended = true;
+                                break genreComparison;
+                            }
+                        }
                     }
+
                     if (recommended) {
                         break;
                     }

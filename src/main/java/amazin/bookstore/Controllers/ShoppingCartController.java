@@ -185,6 +185,21 @@ public class ShoppingCartController {
         model.addAttribute("cart", cart);
         model.addAttribute("user", user);  // Add user to the model
 
+        if (!cart.getBooks().isEmpty())
+        {
+            double total = 0;
+            for (Map.Entry<Book, Integer> entry : cart.getBooks().entrySet()) {
+                Book key = entry.getKey();
+                int value = entry.getValue();
+
+                double bookTotal = key.getPrice() * value;
+                total = total + bookTotal;
+            }
+
+            total = total * 1.13;
+            model.addAttribute("total", String.format("%.2f", total));  // Add user to the model
+        }
+
         return "viewCart";
     }
 

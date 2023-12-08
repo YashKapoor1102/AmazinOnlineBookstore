@@ -50,6 +50,10 @@
             <p>Your shopping cart is empty.</p>
         </div>
 
+        <div th:if="${!cart.books.isEmpty()}">
+            <p th:text="'Cart Total: $' + ${total}" />
+        </div>
+
         <!-- Add the "Checkout" button -->
         <form th:action="@{/cart/checkout/{userId}(userId=${user.id})}" method="post">
             <button type="submit">Checkout</button>

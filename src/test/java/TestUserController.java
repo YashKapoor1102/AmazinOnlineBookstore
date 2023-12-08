@@ -175,5 +175,10 @@ public class TestUserController {
 
         // ensuring users that are not registered do not appear on the list
         assertThat(responseEntity.getBody()).doesNotContain("Test User Invalid");
+
+        //delete  test users from test
+        userRepository.delete(user);
+        userRepository.delete(user2);
+        userRepository.delete(user3);
     }
 }

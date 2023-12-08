@@ -83,9 +83,6 @@ public class UserController {
     public String loginUser(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         User user = userRepository.findByUsername(username);
 
-//        if(user.isOwner()) {
-//             return ""    // Redirect to appropriate page - Commented out until the view template is created
-//        }
         if (user != null && password.equals(user.getPassword())) {
             session.setAttribute("userId", user.getId());
 

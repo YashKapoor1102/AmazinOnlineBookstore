@@ -56,7 +56,7 @@ public class ShoppingCartController {
     @PostMapping("/add")
     public String addBookToCart(
             @RequestParam Long bookId,
-            @RequestParam int quantity, // Added quantity parameter
+            @RequestParam int quantity,
             HttpSession session,
             Model model
     ) {
@@ -76,8 +76,8 @@ public class ShoppingCartController {
             }
 
             if (cart != null) {
-                cart.addBook(book, quantity); // Pass the quantity to the addBook method
-                userRepository.save(user); // Saving user will cascade and save the cart as well
+                cart.addBook(book, quantity);
+                userRepository.save(user);
             }
 
             return "redirect:/cart/view";
@@ -100,7 +100,7 @@ public class ShoppingCartController {
             int stock = inventoryController.getBookStockByBookIdInventoryId(book.getId(), 1);
             logger.info(String.valueOf(requestedQuantity));
             if (stock < requestedQuantity) {
-                // Book is out of stock or insufficient stock, inform the user and prevent checkout
+                // Book is out of stock
                 return "redirect:/cart/view?outOfStock=true";
             }
 
@@ -112,7 +112,7 @@ public class ShoppingCartController {
         // Move books from the shopping cart to purchased books
         for (Map.Entry<Book, Integer> entry : shoppingCart.getBooks().entrySet()) {
             Book book = entry.getKey();
-            // Check if the book is not already in the user's purchased books
+            // Check if the book is not already in the purchasedbooks
             if (!user.getPurchasedBooks().contains(book)) {
                 user.addPurchasedBook(book);
             }
@@ -120,7 +120,7 @@ public class ShoppingCartController {
         }
         userRepository.save(user);
 
-        return "CheckoutComplete"; // Redirect to the book listing page or any other page you prefer
+        return "CheckoutComplete";
     }
 
 

@@ -69,7 +69,18 @@ class TestBookController {
         // Extracting text from the title column from each row
         String[] actualTitles = tableRows.select("td:nth-child(3)").eachText().toArray(String[]::new);
         assertThat(actualTitles)
-                .containsExactly( "The Book Of Two Ways", "The Five People You Meet In Heaven", "The Time Machine");
+                .containsExactly( "A Wrinkle in Time",
+                        "Ella Enchanted",
+                        "For One More Day",
+                        "Salem's Lot",
+                        "The Alchemist",
+                        "The Book Of Two Ways",
+                        "The Book Thief",
+                        "The Five People You Meet In Heaven",
+                        "The Princess Bride",
+                        "The Time Keeper",
+                        "The Time Machine",
+                        "Tuesdays with Morrie");
     }
 
     @Test
@@ -82,6 +93,17 @@ class TestBookController {
         // Extracting text from the author column from each row
         String[] actualAuthors = tableRows.select("td:nth-child(4)").eachText().toArray(String[]::new);
         assertThat(actualAuthors)
-                .containsExactly("H.G.Wells", "Jodi Picoult", "Mitch Albom");
+                .containsExactly("Gail Carson Levine",
+                        "H.G.Wells",
+                        "Jodi Picoult",
+                        "Madeleine L'Engle",
+                        "Markus Zusak",
+                        "Mitch Albom",
+                        "Mitch Albom",
+                        "Mitch Albom",
+                        "Mitch Albom",
+                        "Paulo Coelho",
+                        "Stephen King",
+                        "William Goldman");
     }
 }

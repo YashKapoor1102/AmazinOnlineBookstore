@@ -74,15 +74,12 @@ Purchasing a book multiple times and viewing previously purchased books, as well
 * Updated Recommendations function
 * Updated Unit Tests
 
-
 ## UML Diagram of Project 
 ![UML drawio (1)](https://github.com/TheDana1/AmazinOnlineBookstore/assets/78821595/6f6d85d9-5729-4c46-9209-7b5306fe991b)
 
 
 ## Database Schema of Project
 ![Milestone3Schema](https://github.com/TheDana1/AmazinOnlineBookstore/assets/44479056/0a93038b-8902-42fb-a0e1-7a3a7a847ac1)
-
-
 
 
 ## Known issues

@@ -1,14 +1,14 @@
 # AmazinOnlineBookstore
 SYSC4806 Final Project that uses Spring Framework and H2 Persistent Database 
 
-# Project Description 
+## Project Description 
 Amazin Bookstore is an online web application that serves as a comprehensive platform for bookstore owners and users. It provides bookstore owners with robust tools for managing their inventory, while also providing users with a seamless experience to browse and purchase books. Additionally, the application offers advanced features such as book recommendations and flexible filtering options
 
-# Installation Instructions
+## Installation Instructions
 1. Make sure you have Maven and Java installed on your system.
 2. Clone the git repository https://github.com/TheDana1/AmazinOnlineBookstore.git 
 
-# Usage
+## Usage
 1. Run _main_ AmazinOnlineBookstore\src\main\java\amazin\bookstore\AccessingDataJpaApplication.java
 2. To set the bookstore owner (optional):
  ```
@@ -75,17 +75,17 @@ Purchasing a book multiple times and viewing previously purchased books, as well
 * Updated Unit Tests
 
 
-# UML Diagram of Project 
+## UML Diagram of Project 
 ![UML drawio (1)](https://github.com/TheDana1/AmazinOnlineBookstore/assets/78821595/6f6d85d9-5729-4c46-9209-7b5306fe991b)
 
 
-# Database Schema of Project
+## Database Schema of Project
 ![Milestone3Schema](https://github.com/TheDana1/AmazinOnlineBookstore/assets/44479056/0a93038b-8902-42fb-a0e1-7a3a7a847ac1)
 
 
 
 
-# Known issues
+## Known issues
 Currently, there are no known issues.
 
-# License
+## License

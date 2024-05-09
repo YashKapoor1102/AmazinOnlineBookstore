@@ -32,13 +32,13 @@ Run these two commands before running the JAR file
 3. Access localhost at http://localhost:8080/books and http://localhost:8080/user/register for now
 4. Users can register/log in, browse, search, and filter through books.
 
-# Development Roadmap
+## Development Roadmap
 
-## Milestone 1 : Early prototype
+### Milestone 1 : Early prototype
 
 Users are able to log in/register and browse/search/filter through books.  
 
-### Completed Components:
+#### Completed Components:
 * Book Entity
 * Book Controller
 * Book Unit Tests
@@ -46,11 +46,11 @@ Users are able to log in/register and browse/search/filter through books.
 * User Controller
 * User Unit Tests
 
-## Milestone 2 : Alpha Release
+### Milestone 2 : Alpha Release
 
 In this implementation, users have the capability to add books to their shopping cart, remove books from their shopping cart, purchase them, view recommendations, and filter books by price. Additionally, flyway, a database migration tool, was implemented to enhance the inventory management system.
 
-### Completed Components:
+#### Completed Components:
 * Shopping Cart
 * Shopping Cart Controller
 * Checkout functionality 
@@ -62,12 +62,12 @@ In this implementation, users have the capability to add books to their shopping
 * Recommendations Entity
 * Recommendations Controller
 
-## Milestone 3 : Final demo
+### Milestone 3 : Final demo
 For the final version of the project, all minor details like error handling and webpage appearance were improved.
 Users are now able to select the quantity of books that they would like to purchase and, before checkout, view the total cost in their cart.
 Purchasing a book multiple times and viewing previously purchased books, as well as recommendations via a button is also permitted. 
 
-### Completed Components:
+#### Completed Components:
 * Upgraded Error Handling for shoppingCart Functionality
 * Upgraded User Registration
 * Improved Checkout Functionality

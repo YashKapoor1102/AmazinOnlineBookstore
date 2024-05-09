@@ -85,4 +85,8 @@ Purchasing a book multiple times and viewing previously purchased books, as well
 ## Known issues
 Currently, there are no known issues.
 
-## License
+## Credits
+- Yash Kapoor
+- Yaw Asamoah
+- Dana El Sherif
+- Henry Li
